@@ -64,7 +64,7 @@ function Root() {
                                     </div>
                                     <Link to={''} className="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                         <div className="sb-nav-link-icon"><i className="fas fa-book-open" /></div>
-                                        Pages
+                                        Usuarios
                                         <div className="sb-sidenav-collapse-arrow"><i className="fas fa-angle-down" /></div>
                                     </Link>
                                     <div className="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
