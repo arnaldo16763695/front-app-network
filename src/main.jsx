@@ -7,13 +7,20 @@ import {
 } from "react-router-dom";
 
 import Root from './routes/root'
+import Dashboard from './routes/Dashboard';
 
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root/>,
+    element: <Root />,
+    children: [
+      {
+        path: "home",
+        element: <Dashboard />,
+      },
+    ],
   },
 ]);
 
