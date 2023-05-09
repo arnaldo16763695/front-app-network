@@ -8,6 +8,8 @@ import {
 
 import Root from './routes/root'
 import Dashboard from './routes/Dashboard';
+import UserManagment from './routes/users/UserManagment';
+import AddUser from './routes/users/AddUser';
 
 
 
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <Dashboard />,
+      },
+      {
+        path: "users",
+        element: <UserManagment/>,
+      },
+      {
+        path: "add-user",
+        element: <AddUser/>,
       },
     ],
   },
