@@ -1,6 +1,9 @@
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Outlet, Link } from "react-router-dom";
 function Root() {
+  const auth = useSelector((state) => state.auth);
+  console.log(auth);
   useEffect(() => {
     if (localStorage.getItem("sb|sidebar-toggle") === "true") {
       document.body.classList.add("sb-sidenav-toggled");
