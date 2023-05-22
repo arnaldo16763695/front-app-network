@@ -26,7 +26,7 @@ const AddUser = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(form)
-    
+
     if (
       !form.email.trim() ||
       !form.name.trim() ||
@@ -36,8 +36,8 @@ const AddUser = () => {
       alert("Datos incompletos");
       return;
     }
- 
-     addUser(form);
+
+    addUser(form);
   };
   const handleChange = (e) => {
     setForm({
@@ -123,12 +123,13 @@ const AddUser = () => {
               </select>
             </div>
 
-            <input
+            {/* <input
               type="submit"
               value="Guardar"
               className="btn btn-primary me-3"
-            />
+            /> */}
 
+            <input type="submit" className="btn btn-primary me-3" value="Guardar" />
             <Link type="button" to={"/users"} className="btn btn-warning">
               Cancelar
             </Link>
