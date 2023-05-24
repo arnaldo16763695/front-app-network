@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+
 import { Outlet, Link } from "react-router-dom";
 function Root() {
-  const auth = useSelector((state) => state.auth);
-  console.log(auth);
+ 
+
   useEffect(() => {
     if (localStorage.getItem("sb|sidebar-toggle") === "true") {
       document.body.classList.add("sb-sidenav-toggled");
@@ -35,7 +35,7 @@ function Root() {
             <i className="fas fa-bars" />
           </button>
           {/* Navbar Search*/}
-          <form className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+          <form name="form-search" id="form-search" className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
             <div className="input-group">
               <input
                 className="form-control"
@@ -134,7 +134,7 @@ function Root() {
                   >
                     <nav className="sb-sidenav-menu-nested nav">
                       <Link
-                        to={""}
+                        to={"/headquaters"}
                         className="nav-link"
                         href="layout-static.html"
                       >

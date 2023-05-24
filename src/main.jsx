@@ -11,6 +11,7 @@ import AddUser from "./routes/users/AddUser";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 import Login from "./components/Login";
+import HeadquatersManagment from "./routes/headquaters/HeadquatersManagment";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "add-user",
         element: <AddUser />,
+      },
+      {
+        path: "headquaters",
+        element: <HeadquatersManagment/>,
       },
     ],
   },
