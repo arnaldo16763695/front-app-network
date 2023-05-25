@@ -1,15 +1,16 @@
 import "./css-components/login.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const initialForm = {
   email: "",
   password: "",
 };
-import { useDispatch } from "react-redux";
-import { addAuth } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Login = () => {
-  const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
+  const [unauthorized, setUnauthorized] = useState(false);
   const [form, setForm] = useState(initialForm);
   const handleOnChange = (e) => {
     setForm({
@@ -17,6 +18,12 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
+  useEffect(() => {
+    if (auth) {
+      navigate("/");
+    }
+  }, []);
+
   const createUser = async () => {
     try {
       const res = await fetch(`http://localhost:8000/api/auth/login`, {
@@ -27,13 +34,19 @@ const Login = () => {
         body: JSON.stringify(form),
       });
       const data = await res.json();
-      console.log(data)
+      console.log(data);
       if (!res.ok) throw { status: res.status, statusText: res.statusText };
-      dispatch(addAuth(data))
+      document.cookie = `tokenNetwork=${data.token}; path=/; max-age=7200`;
+      navigate("/");
     } catch (error) {
       let message = error.statusText || "Ocurrió un error";
       console.log(error.status, message);
-
+      if (message === "Unauthorized") {
+        setUnauthorized(true);
+        setTimeout(() => {
+          setUnauthorized(false);
+        }, 3000);
+      }
     }
   };
   const handleSubmit = (e) => {
@@ -46,7 +59,6 @@ const Login = () => {
   };
 
   return (
-
     <div id="layoutAuthentication">
       <div id="layoutAuthentication_content">
         <main>
@@ -55,10 +67,17 @@ const Login = () => {
               <div className="col-lg-5">
                 <div className="card shadow-lg border-0 rounded-lg mt-5">
                   <div className="card-header">
-                    <h3 className="text-center font-weight-light my-4">Login AdminRed</h3>
+                    <h3 className="text-center font-weight-light my-4">
+                      Login AdminRed
+                    </h3>
+                    {unauthorized && (
+                      <p className="text-center  text-danger my-1 ">
+                        Usuario o Password Inválido
+                      </p>
+                    )}
                   </div>
                   <div className="card-body">
-                    <form>
+                    <form onSubmit={handleSubmit}>
                       <div className="form-floating mb-3">
                         <input
                           className="form-control"
@@ -98,10 +117,11 @@ const Login = () => {
                         </label>
                       </div> */}
                       <div className="d-flex align-items-center justify-content-center mt-4 mb-0">
-
-                        <a className="btn btn-primary" href="index.html">
-                          Login
-                        </a>
+                        <input
+                          type="submit"
+                          className="btn btn-primary"
+                          value="Login"
+                        />
                       </div>
                     </form>
                   </div>

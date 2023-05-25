@@ -12,7 +12,7 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import Login from "./components/Login";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter([ 
   {
     path: "/login",
     element: <Login/>,
