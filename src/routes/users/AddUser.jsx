@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const url = `http://localhost:8000/api/auth/register`;
 const initialForm = {
   name: "",
@@ -9,6 +9,8 @@ const initialForm = {
 };
 const AddUser = () => {
   const [form, setForm] = useState(initialForm);
+  const [rols, setRols] = useState('');
+
   const addUser = async (form) => {
     try {
       const res = await fetch(url, {
@@ -25,7 +27,7 @@ const AddUser = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form)
+    console.log(form);
 
     if (
       !form.email.trim() ||
@@ -45,6 +47,21 @@ const AddUser = () => {
       [e.target.name]: e.target.value,
     });
   };
+  const getRols = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/roles"),
+        rols = await res.json();
+      console.log(rols);
+      setRols(rols);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getRols();
+  }, []);
+
   return (
     <div className="container">
       <div className="card mt-5">
@@ -118,8 +135,8 @@ const AddUser = () => {
                 aria-label="Default select example"
               >
                 <option>-------</option>
-                <option value="1">Administrador</option>
-                <option value="2">Usuario</option>
+                {Object.keys(rols).length > 0 &&
+                  rols.roles.map((rol) => <option key={rol.id}>{rol.name}</option>)}
               </select>
             </div>
 
@@ -129,7 +146,11 @@ const AddUser = () => {
               className="btn btn-primary me-3"
             /> */}
 
-            <input type="submit" className="btn btn-primary me-3" value="Guardar" />
+            <input
+              type="submit"
+              className="btn btn-primary me-3"
+              value="Guardar"
+            />
             <Link type="button" to={"/users"} className="btn btn-warning">
               Cancelar
             </Link>

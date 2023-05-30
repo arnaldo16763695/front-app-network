@@ -4,32 +4,12 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 
 import { addAuth } from "../features/auth/authSlice";
 function Root() {
-  const navigate = useNavigate();
-
-
-
-import { Outlet, Link } from "react-router-dom";
-function Root() {
  
-
-
   useEffect(() => {
     if (localStorage.getItem("sb|sidebar-toggle") === "true") {
       document.body.classList.add("sb-sidenav-toggled");
     }
 
-    dispatch(
-      addAuth(
-        document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("tokenNetwork="))
-          ?.split("=")[1]
-      )
-    );
- 
-    if(!auth){
-      navigate('/login')
-    }
     
   }, []);
 
