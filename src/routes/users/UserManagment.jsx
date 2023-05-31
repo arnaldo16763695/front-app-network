@@ -53,7 +53,7 @@ const UserManagment = () => {
                       <td>{user.email}</td>
                       <td>{user.phone}</td>
                       <td>
-                        <Link to={""} className="me-3">
+                        <Link to={`/edit-user/${user.id}`} className="me-3">
                           <i className="fas fa-pencil" />
                         </Link>{" "}
                         <Link to={""}>

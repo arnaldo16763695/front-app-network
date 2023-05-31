@@ -13,35 +13,9 @@ import { store } from "./app/store";
 import Login from "./components/Login";
 import HeadquatersManagment from "./routes/headquaters/HeadquatersManagment";
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import EditUser from "./routes/users/EditUser";
 
-// const router = createBrowserRouter([
-//   {
-//     path: "/login",
-//     element: <Login/>,
-//   },
-//   {
-//     path: "/",
-//     element: <Root />,
-//     children: [
-//       {
-//         path: "home",
-//         element: <Dashboard />,
-//       },
-//       {
-//         path: "users",
-//         element: <UserManagment />,
-//       },
-//       {
-//         path: "add-user",
-//         element: <AddUser />,
-//       },
-//       {
-//         path: "headquaters",
-//         element: <HeadquatersManagment/>,
-//       },
-//     ],
-//   },
-// ]);
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -61,6 +35,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/home" element={<Dashboard />}></Route>
             <Route path="/users" element={<UserManagment />}></Route>
             <Route path="/add-User" element={<AddUser />}></Route>
+            <Route path="/edit-user/:user_id" element={<EditUser />}></Route>
             <Route
               path="/headquaters"
               element={<HeadquatersManagment />}
