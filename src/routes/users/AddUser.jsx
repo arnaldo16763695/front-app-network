@@ -1,15 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 const url = `http://localhost:8000/api/auth/register`;
 const initialForm = {
   name: "",
   email: "",
   phone: "",
   password: "",
+  role_id: "",
 };
 const AddUser = () => {
+  const auth = useSelector((state) => state.auth);
   const [form, setForm] = useState(initialForm);
-  const [rols, setRols] = useState('');
+  const [rols, setRols] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [failMessage, setFailMessage] = useState({});
+  const navigate = useNavigate();
 
   const addUser = async (form) => {
     try {
@@ -17,10 +23,24 @@ const AddUser = () => {
         method: "POST",
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${auth.token}`,
         },
-        body: form,
+        body: JSON.stringify(form),
       });
-      console.log(res);
+
+      const json = await res.json();
+      console.log(json.message);
+      if (json.message === "Registro creado") {
+        setSuccessMessage(json.message);
+        setTimeout(() => {
+          navigate("/users");
+        }, 4000);
+      }
+      if (json.message === "Errores de Validacion") {
+        setFailMessage(Object.entries(json.data));
+
+        console.log(Object.entries(json.data));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +73,6 @@ const AddUser = () => {
         rols = await res.json();
       console.log(rols);
       setRols(rols);
-
     } catch (error) {
       console.log(error);
     }
@@ -70,6 +89,24 @@ const AddUser = () => {
         </div>
         <div className="card-body">
           <form onSubmit={handleSubmit}>
+            {successMessage && (
+              <div className="alert alert-success" role="alert">
+                {successMessage}
+              </div>
+            )}
+
+            {Object.keys(failMessage).length > 0 && (
+              <div className="alert alert-danger" role="alert">
+              
+                   {failMessage.map(([key, value]) => (
+                    <ul key={key}>{value.map((el, id)=>(<li key={id}>{el}</li>))}</ul>
+                  ))}
+                
+                 
+                
+              </div>
+            )}
+
             <div className="mb-3">
               <label htmlFor="inputCorreo" className="form-label">
                 Correo
@@ -131,12 +168,18 @@ const AddUser = () => {
                 Rol
               </label>
               <select
+                name="role_id"
                 className="form-select"
                 aria-label="Default select example"
+                onChange={handleChange}
               >
-                <option>-------</option>
+                <option value="">Elija un rol ..</option>
                 {Object.keys(rols).length > 0 &&
-                  rols.roles.map((rol) => <option key={rol.id}>{rol.name}</option>)}
+                  rols.roles.map((rol) => (
+                    <option value={rol.id} key={rol.id}>
+                      {rol.name}
+                    </option>
+                  ))}
               </select>
             </div>
 

@@ -3,8 +3,12 @@ import { useEffect } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { removeAuth } from "../features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+    
+
 
 function Root() {
+  const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -20,10 +24,28 @@ function Root() {
       document.body.classList.contains("sb-sidenav-toggled")
     );
   };
+  const logoutSession = async () => {
+    try {
+      const res = await fetch(`http://localhost:8000/api/auth/logout`, {
+        headers:{
+          "Content-type": "application/json",
+          "Authorization": `Bearer ${auth.token}`
+        }
+      });
 
+      const json = await res.json();
+      console.log(json)
+      
+      console.log(res);
+      if (!res.ok) throw { statusText: res.statusText, status: res.status };
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const logout = () => {
     localStorage.removeItem("tokenNetwork");
     dispatch(removeAuth());
+    logoutSession();
     navigate("/login");
   };
   return (
