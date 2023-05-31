@@ -5,11 +5,13 @@ const initialForm = {
   password: "",
 };
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addAuth } from "../features/auth/authSlice";
 
 const Login = () => {
   const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [unauthorized, setUnauthorized] = useState(false);
   const [form, setForm] = useState(initialForm);
   const handleOnChange = (e) => {
@@ -19,12 +21,12 @@ const Login = () => {
     });
   };
   useEffect(() => {
-    if (auth) {
+    if (auth.token) {
       navigate("/");
     }
-  }, []);
+  } );
 
-  const createUser = async () => {
+  const login = async () => {
     try {
       const res = await fetch(`http://localhost:8000/api/auth/login`, {
         method: "POST",
@@ -36,7 +38,10 @@ const Login = () => {
       const data = await res.json();
       console.log(data);
       if (!res.ok) throw { status: res.status, statusText: res.statusText };
-      document.cookie = `tokenNetwork=${data.token}; path=/; max-age=7200`;
+      // document.cookie = `tokenNetwork=${data.token}; path=/; max-age=7200`;
+      localStorage.setItem("tokenNetwork", data.token);
+      dispatch(addAuth(data.token));
+
       navigate("/");
     } catch (error) {
       let message = error.statusText || "Ocurrió un error";
@@ -55,7 +60,7 @@ const Login = () => {
       alert("datos Incompletos");
       return;
     }
-    createUser();
+    login();
   };
 
   return (

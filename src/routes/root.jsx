@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 
 import { Outlet, Link, useNavigate } from "react-router-dom";
+import { removeAuth } from "../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
-import { addAuth } from "../features/auth/authSlice";
 function Root() {
- 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
     if (localStorage.getItem("sb|sidebar-toggle") === "true") {
       document.body.classList.add("sb-sidenav-toggled");
     }
-
-    
   }, []);
 
   const addToggled = () => {
@@ -19,6 +19,12 @@ function Root() {
       "sb|sidebar-toggle",
       document.body.classList.contains("sb-sidenav-toggled")
     );
+  };
+
+  const logout = () => {
+    localStorage.removeItem("tokenNetwork");
+    dispatch(removeAuth());
+    navigate("/login");
   };
   return (
     <>
@@ -38,7 +44,11 @@ function Root() {
             <i className="fas fa-bars" />
           </button>
           {/* Navbar Search*/}
-          <form name="form-search" id="form-search" className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+          <form
+            name="form-search"
+            id="form-search"
+            className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"
+          >
             <div className="input-group">
               <input
                 className="form-control"
@@ -88,9 +98,9 @@ function Root() {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <Link to={""} className="dropdown-item" href="#!">
+                  <button onClick={logout} className="dropdown-item" href="#!">
                     Logout
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </li>
