@@ -2,49 +2,41 @@ import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-
-
- const initialForm = {
-    name: "",
-    email: "",
-    phone: "",
-    
-  };
-  const EditUser = () => {
-    const auth = useSelector((state) => state.auth);
-    const [form, setForm] = useState(initialForm);
-    const [rols, setRols] = useState('');
-    const {user_id} = useParams();
-    const [message, setMessage] = useState('');
-  const url_user = `http://localhost:8000/api/user/${user_id}` 
+const initialForm = {
+  name: "",
+  email: "",
+  phone: "",
+};
+const EditUser = () => {
+  const auth = useSelector((state) => state.auth);
+  const [form, setForm] = useState(initialForm);
+  const [rols, setRols] = useState("");
+  const { user_id } = useParams();
+  const [message, setMessage] = useState("");
+  const url_user = `http://localhost:8000/api/user/${user_id}`;
   //  console.log(form)
   const updateUser = async (form) => {
-    console.log(form)
+    
     try {
       const res = await fetch(url_user, {
         method: "PUT",
         headers: {
           "Content-type": "application/json",
-          "Authorization": `Bearer ${auth.token}`
+          Authorization: `Bearer ${auth.token}`,
         },
         body: form,
       });
-      console.log(url_user)
-      setMessage(res.message)
-      console.log(res)
+      console.log(url_user);
+      setMessage(res.message);
+      console.log(res);
     } catch (error) {
       console.log(error);
     }
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    
-    if (
-      !form.email.trim() ||
-      !form.name.trim() ||
-      !form.phone.trim() 
-    ) {
+
+    if (!form.email.trim() || !form.name.trim() || !form.phone.trim()) {
       alert("Datos incompletos");
       return;
     }
@@ -63,35 +55,30 @@ import { useSelector } from "react-redux";
         rols = await res.json();
       // console.log(rols);
       setRols(rols);
-
     } catch (error) {
       console.log(error);
     }
   };
-  const getUser = async ()=>{
+  const getUser = async () => {
     try {
       const res = await fetch(url_user),
         user = await res.json();
       // console.log(user.data);
-       setForm({
+      setForm({
         name: user.data.name,
         email: user.data.email,
         phone: user.data.phone,
-        
-       });
-
+      });
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   useEffect(() => {
     getRols();
     getUser();
   }, []);
 
- 
-  
-//  console.log(form)
+  //  console.log(form)
   return (
     <div className="container">
       <div className="card mt-5">
@@ -111,7 +98,7 @@ import { useSelector } from "react-redux";
                 id="inputCorreo"
                 placeholder="name@example.com"
                 onChange={handleChange}
-                value={form.email || ''}
+                value={form.email || ""}
                 name="email"
               />
             </div>
@@ -125,7 +112,7 @@ import { useSelector } from "react-redux";
                 id="inputName"
                 rows="3"
                 onChange={handleChange}
-                value={form.name || ''}
+                value={form.name || ""}
                 name="name"
               ></input>
             </div>
@@ -139,7 +126,7 @@ import { useSelector } from "react-redux";
                 id="inputPhone"
                 rows="3"
                 onChange={handleChange}
-                value={form.phone || ''}
+                value={form.phone || ""}
                 name="phone"
               ></input>
             </div>
@@ -153,7 +140,7 @@ import { useSelector } from "react-redux";
                 id="inputPassword"
                 rows="3"
                 onChange={handleChange}
-                value={form.password || ''}
+                value={form.password || ""}
                 name="password"
               ></input>
             </div>
@@ -167,9 +154,12 @@ import { useSelector } from "react-redux";
                 name="role_id"
                 onChange={handleChange}
               >
-                
                 {Object.keys(rols).length > 0 &&
-                  rols.roles.map((rol) => <option  value={rol.id} key={rol.id}>{rol.name}</option>)}
+                  rols.roles.map((rol) => (
+                    <option value={rol.id} key={rol.id}>
+                      {rol.name}
+                    </option>
+                  ))}
               </select>
             </div>
 

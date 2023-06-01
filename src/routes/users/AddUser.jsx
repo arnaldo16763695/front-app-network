@@ -97,13 +97,13 @@ const AddUser = () => {
 
             {Object.keys(failMessage).length > 0 && (
               <div className="alert alert-danger" role="alert">
-              
-                   {failMessage.map(([key, value]) => (
-                    <ul key={key}>{value.map((el, id)=>(<li key={id}>{el}</li>))}</ul>
-                  ))}
-                
-                 
-                
+                {failMessage.map(([key, value]) => (
+                  <ul key={key}>
+                    {value.map((el, id) => (
+                      <li key={id}>{el}</li>
+                    ))}
+                  </ul>
+                ))}
               </div>
             )}
 
