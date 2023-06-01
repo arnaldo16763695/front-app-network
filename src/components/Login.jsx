@@ -40,6 +40,8 @@ const Login = () => {
       if (!res.ok) throw { status: res.status, statusText: res.statusText };
       // document.cookie = `tokenNetwork=${data.token}; path=/; max-age=7200`;
       localStorage.setItem("tokenNetwork", data.token);
+      localStorage.setItem("roleId", data.role_id);
+      localStorage.setItem("userName", data.user_name);
       dispatch(addAuth(data.token));
 
       navigate("/");

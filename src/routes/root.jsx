@@ -44,6 +44,8 @@ function Root() {
   };
   const logout = () => {
     localStorage.removeItem("tokenNetwork");
+    localStorage.removeItem("roleId");
+    localStorage.removeItem("userName");
     dispatch(removeAuth());
     logoutSession();
     navigate("/login");
@@ -108,12 +110,7 @@ function Root() {
               >
                 <li>
                   <Link to={""} className="dropdown-item" href="#!">
-                    Settings
-                  </Link>
-                </li>
-                <li>
-                  <Link to={""} className="dropdown-item" href="#!">
-                    Activity Log
+                    Mi perfil
                   </Link>
                 </li>
                 <li>
@@ -121,7 +118,7 @@ function Root() {
                 </li>
                 <li>
                   <button onClick={logout} className="dropdown-item" href="#!">
-                    Logout
+                    Cerrar sesión
                   </button>
                 </li>
               </ul>
@@ -336,8 +333,8 @@ function Root() {
                 </div>
               </div>
               <div className="sb-sidenav-footer">
-                <div className="small">Logged in as:</div>
-                Start Bootstrap
+                <div className="small">Logueado como : {localStorage.getItem('userName')}</div>
+                Network
               </div>
             </nav>
           </div>
