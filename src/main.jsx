@@ -11,11 +11,12 @@ import AddUser from "./routes/users/AddUser";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 import Login from "./components/Login";
-import HeadquatersManagment from "./routes/headquaters/HeadquatersManagment";
+import HeadquatersManagment from "./routes/ubications/headquaters/HeadquatersManagment";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import EditUser from "./routes/users/EditUser";
-
-
+import ChangePassword from "./routes/users/ChangePassword";
+import Devices from "./routes/inventary/devices/Devices";
+import Spaces from "./routes/ubications/headquaters/Spaces";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -36,6 +37,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/users" element={<UserManagment />}></Route>
             <Route path="/add-User" element={<AddUser />}></Route>
             <Route path="/edit-user/:user_id" element={<EditUser />}></Route>
+            <Route path="/devices" element={<Devices />}></Route>
+            <Route path="/spaces" element={<Spaces />}></Route>
+            <Route
+              path="/change-pass/:user_id"
+              element={<ChangePassword />}
+            ></Route>
             <Route
               path="/headquaters"
               element={<HeadquatersManagment />}

@@ -1,16 +1,25 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Loader } from "../../components/Loader";
+import { useSelector } from "react-redux";
 
 const UserManagment = () => {
   const url = `http://localhost:8000/api/user`;
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const auth = useSelector((state) => state.auth);
+
   const getUsers = async () => {
     setLoading(true);
     try {
-      const res = await fetch(url),
+      const res = await fetch(url, {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }),
         usersData = await res.json();
+      console.log(usersData);
       setUsers(usersData);
       setLoading(false);
     } catch (error) {
@@ -42,6 +51,7 @@ const UserManagment = () => {
                     <th scope="col">Nombre y Apellido</th>
                     <th scope="col">Email</th>
                     <th scope="col">Teléfono</th>
+                    <th scope="col">Rol</th>
                     <th scope="col">Acción</th>
                   </tr>
                 </thead>
@@ -52,12 +62,16 @@ const UserManagment = () => {
                       <td>{user.name}</td>
                       <td>{user.email}</td>
                       <td>{user.phone}</td>
+                      <td>{user.roles[0].name}</td>
                       <td>
-                        <Link to={`/edit-user/${user.id}`} className="me-3">
+                        <Link to={`/edit-user/${user.id}`} className="me-3" title="Editar este usuario">
                           <i className="fas fa-pencil" />
                         </Link>{" "}
-                        <Link to={""}>
-                          <i className="fas fa-trash" />
+                        <Link to={`/change-pass/${user.id}`} className="me-3" title="Cambiar el password del usuario">
+                          <i className="fa-solid fa-key"></i>
+                        </Link>
+                        <Link to={""} title="Eliminar este usuario">
+                          <i className="fas fa-trash"></i>
                         </Link>
                       </td>
                     </tr>

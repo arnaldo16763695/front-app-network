@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+
 const url = `http://localhost:8000/api/auth/register`;
 const initialForm = {
   name: "",
@@ -33,12 +34,16 @@ const AddUser = () => {
       if (json.message === "Registro creado") {
         setSuccessMessage(json.message);
         setTimeout(() => {
+          setSuccessMessage("");
           navigate("/users");
-        }, 4000);
+        }, 3000);
       }
       if (json.message === "Errores de Validacion") {
         setFailMessage(Object.entries(json.data));
-
+        setTimeout(() => {
+          setFailMessage({});
+         
+        }, 6000);
         console.log(Object.entries(json.data));
       }
     } catch (error) {
@@ -69,7 +74,12 @@ const AddUser = () => {
   };
   const getRols = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/roles"),
+      const res = await fetch("http://localhost:8000/api/auth/roles", {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }),
         rols = await res.json();
       console.log(rols);
       setRols(rols);

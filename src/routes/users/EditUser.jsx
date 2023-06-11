@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
@@ -6,8 +6,10 @@ const initialForm = {
   name: "",
   email: "",
   phone: "",
+  role_id: ""
 };
 const EditUser = () => {
+  const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
   const [form, setForm] = useState(initialForm);
   const [rols, setRols] = useState("");
@@ -16,7 +18,6 @@ const EditUser = () => {
   const url_user = `http://localhost:8000/api/user/${user_id}`;
   //  console.log(form)
   const updateUser = async (form) => {
-    
     try {
       const res = await fetch(url_user, {
         method: "PUT",
@@ -24,11 +25,19 @@ const EditUser = () => {
           "Content-type": "application/json",
           Authorization: `Bearer ${auth.token}`,
         },
-        body: form,
+        body: JSON.stringify(form),
       });
-      console.log(url_user);
-      setMessage(res.message);
-      console.log(res);
+
+      const json = await res.json();
+     
+      console.log(json);
+      setMessage(json.message);
+
+      setTimeout(() => {
+        setMessage("");
+        navigate("/users")
+      }, 3000);
+      
     } catch (error) {
       console.log(error);
     }
@@ -51,9 +60,14 @@ const EditUser = () => {
   };
   const getRols = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/roles"),
+      const res = await fetch("http://localhost:8000/api/auth/roles", {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }),
         rols = await res.json();
-      // console.log(rols);
+      console.log(rols);
       setRols(rols);
     } catch (error) {
       console.log(error);
@@ -61,13 +75,19 @@ const EditUser = () => {
   };
   const getUser = async () => {
     try {
-      const res = await fetch(url_user),
+      const res = await fetch(url_user,{
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${auth.token}`,
+        },
+      }),
         user = await res.json();
-      // console.log(user.data);
+       console.log(user.data.roles[0].id);
       setForm({
         name: user.data.name,
         email: user.data.email,
         phone: user.data.phone,
+        role_id: user.data.roles[0].id,
       });
     } catch (error) {
       console.log(error);
@@ -87,7 +107,7 @@ const EditUser = () => {
         </div>
         <div className="card-body">
           <form onSubmit={handleSubmit}>
-            {message && <di>{message}</di>}
+            {message && <div  className="alert alert-success" role="alert">{message}</div>}
             <div className="mb-3">
               <label htmlFor="inputCorreo" className="form-label">
                 Correo
@@ -130,20 +150,7 @@ const EditUser = () => {
                 name="phone"
               ></input>
             </div>
-            <div className="mb-3">
-              <label htmlFor="inputPhone" className="form-label">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="inputPassword"
-                rows="3"
-                onChange={handleChange}
-                value={form.password || ""}
-                name="password"
-              ></input>
-            </div>
+           
             <div className="mb-3">
               <label htmlFor="inputPhone" className="form-label">
                 Rol
@@ -153,6 +160,7 @@ const EditUser = () => {
                 aria-label="Default select example"
                 name="role_id"
                 onChange={handleChange}
+                value= {form.role_id || ""}
               >
                 {Object.keys(rols).length > 0 &&
                   rols.roles.map((rol) => (
