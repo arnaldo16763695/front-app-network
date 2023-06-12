@@ -16,7 +16,9 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import EditUser from "./routes/users/EditUser";
 import ChangePassword from "./routes/users/ChangePassword";
 import Devices from "./routes/inventary/devices/Devices";
-import Spaces from "./routes/ubications/headquaters/Spaces";
+import Spaces from "./routes/ubications/spaces/Spaces";
+import AddHeadquarter from "./routes/ubications/headquaters/addHeadquarter";
+import EditHeadquarter from "./routes/ubications/headquaters/EditHeadquarter";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -39,12 +41,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/edit-user/:user_id" element={<EditUser />}></Route>
             <Route path="/devices" element={<Devices />}></Route>
             <Route path="/spaces" element={<Spaces />}></Route>
+            <Route path="/add-headquarter" element={<AddHeadquarter/>}></Route>
+            <Route path="/edit-headquarter/:headquarter_id" element={<EditHeadquarter/>}></Route>
             <Route
               path="/change-pass/:user_id"
               element={<ChangePassword />}
             ></Route>
             <Route
-              path="/headquaters"
+              path="/headquarters"
               element={<HeadquatersManagment />}
             ></Route>
           </Route>

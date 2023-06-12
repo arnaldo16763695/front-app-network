@@ -2,61 +2,57 @@ import { useEffect, useState } from "react";
 import DataTable, { createTheme } from "react-data-table-component";
 import { Link } from "react-router-dom";
 import "styled-components";
+import { useSelector } from "react-redux";
+import { Loader } from "../../../components/Loader";
+import { helpHttp } from "../../../helpers/helpHttp";
 
 const HeadquatersManagment = () => {
+  const api = helpHttp();
+  const auth = useSelector((state) => state.auth);
+  const [headquaters, setHeadquaters] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const url = `http://localhost:8000/api/headquarters`;
+
   useEffect(() => {
-    showData();
+    api
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      })
+      .then((res) => {
+        setLoading(true);
+        if (!res.err) {
+          setHeadquaters(res.data);
+        } else {
+          setHeadquaters({});
+        }
+        setLoading(false);
+      });
   }, []);
 
-  const [headquaters, setHeadquaters] = useState([]);
-  const url = `https://gorest.co.in/public/v2/users`;
-  const showData = async () => {
-    try {
-      console.log(url);
-      const res = await fetch(url),
-        datajson = await res.json();
-      if (!res.ok) throw { status: res.status, statusText: res.statusText };
-      setHeadquaters(datajson);
-      console.log(datajson);
-    } catch (error) {
-      let message = error.statusText || "ocurrió un error";
-      console.log(error.status, message);
-    }
-  };
-
   const columns = [
-    {
-      name: "ID",
-      selector: (row) => row.id,
-      sortable: true,
-    },
     {
       name: "NOMBRE",
       selector: (row) => row.name,
       sortable: true,
     },
     {
-      name: "DIRECCIÓN",
-      selector: (row) => row.email,
+      name: "ESTADO",
+      selector: (row) => row.state,
       sortable: true,
     },
     {
-      name: "GENERO",
-      selector: (row) => row.gender,
-      sortable: true,
-    },
-
-    {
-      name: "STATUS",
-      selector: (row) => row.status,
+      name: "CIUDAD",
+      selector: (row) => row.city,
       sortable: true,
     },
 
     {
       name: "ACCIÓN",
-      selector: () => (
+      selector: (row) => (
         <>
-          <Link to={""} className="me-3">
+          <Link to={`/edit-headquarter/${row.id}`} className="me-3">
             <i className="fas fa-pencil" />
           </Link>{" "}
           <Link to={""}>
@@ -100,17 +96,21 @@ const HeadquatersManagment = () => {
       <div className="card mt-5">
         <div className="card-header d-flex justify-content-between">
           <h4>Sucursales</h4>
-          <Link to={"/add-user"} className="btn btn-primary">
+          <Link to={"/add-headquarter"} className="btn btn-primary">
             <i className="fas fa-user-plus" />
           </Link>
         </div>
         <div className="card-body-ppp">
-          <DataTable
-            columns={columns}
-            data={headquaters}
-            pagination
-            theme="custom"
-          />
+          {loading ? (
+            <Loader />
+          ) : (
+            <DataTable
+              columns={columns}
+              data={headquaters}
+              pagination
+              theme="custom"
+            />
+          )}
         </div>
       </div>
     </div>

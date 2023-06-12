@@ -42,7 +42,6 @@ const AddUser = () => {
         setFailMessage(Object.entries(json.data));
         setTimeout(() => {
           setFailMessage({});
-         
         }, 6000);
         console.log(Object.entries(json.data));
       }

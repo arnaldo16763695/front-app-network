@@ -1,12 +1,13 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Loader } from "../../components/Loader";
 
 const initialForm = {
   name: "",
   email: "",
   phone: "",
-  role_id: ""
+  role_id: "",
 };
 const EditUser = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const EditUser = () => {
   const { user_id } = useParams();
   const [message, setMessage] = useState("");
   const url_user = `http://localhost:8000/api/user/${user_id}`;
+  const [loading, setLoading] = useState(false);
   //  console.log(form)
   const updateUser = async (form) => {
     try {
@@ -29,15 +31,13 @@ const EditUser = () => {
       });
 
       const json = await res.json();
-     
+
       console.log(json);
       setMessage(json.message);
-
       setTimeout(() => {
         setMessage("");
-        navigate("/users")
+        navigate("/users");
       }, 3000);
-      
     } catch (error) {
       console.log(error);
     }
@@ -75,14 +75,16 @@ const EditUser = () => {
   };
   const getUser = async () => {
     try {
-      const res = await fetch(url_user,{
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
-        },
-      }),
+      setLoading(true);
+      const res = await fetch(url_user, {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }),
         user = await res.json();
-       console.log(user.data.roles[0].id);
+      console.log(user.data.roles[0].id);
+      setLoading(false);
       setForm({
         name: user.data.name,
         email: user.data.email,
@@ -106,86 +108,94 @@ const EditUser = () => {
           <h4>Editar Usuario</h4>
         </div>
         <div className="card-body">
-          <form onSubmit={handleSubmit}>
-            {message && <div  className="alert alert-success" role="alert">{message}</div>}
-            <div className="mb-3">
-              <label htmlFor="inputCorreo" className="form-label">
-                Correo
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="inputCorreo"
-                placeholder="name@example.com"
-                onChange={handleChange}
-                value={form.email || ""}
-                name="email"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="inputName" className="form-label">
-                Nombre y Apellido
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="inputName"
-                rows="3"
-                onChange={handleChange}
-                value={form.name || ""}
-                name="name"
-              ></input>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="inputPhone" className="form-label">
-                Teléfono
-              </label>
-              <input
-                type="tel"
-                className="form-control"
-                id="inputPhone"
-                rows="3"
-                onChange={handleChange}
-                value={form.phone || ""}
-                name="phone"
-              ></input>
-            </div>
-           
-            <div className="mb-3">
-              <label htmlFor="inputPhone" className="form-label">
-                Rol
-              </label>
-              <select
-                className="form-select"
-                aria-label="Default select example"
-                name="role_id"
-                onChange={handleChange}
-                value= {form.role_id || ""}
-              >
-                {Object.keys(rols).length > 0 &&
-                  rols.roles.map((rol) => (
-                    <option value={rol.id} key={rol.id}>
-                      {rol.name}
-                    </option>
-                  ))}
-              </select>
-            </div>
+          {loading ? (
+            <Loader />
+          ) : (
+            <form onSubmit={handleSubmit}>
+              {message && (
+                <div className="alert alert-success" role="alert">
+                  {message}
+                </div>
+              )}
+              <div className="mb-3">
+                <label htmlFor="inputCorreo" className="form-label">
+                  Correo
+                </label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="inputCorreo"
+                  placeholder="name@example.com"
+                  onChange={handleChange}
+                  value={form.email || ""}
+                  name="email"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="inputName" className="form-label">
+                  Nombre y Apellido
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="inputName"
+                  rows="3"
+                  onChange={handleChange}
+                  value={form.name || ""}
+                  name="name"
+                ></input>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="inputPhone" className="form-label">
+                  Teléfono
+                </label>
+                <input
+                  type="tel"
+                  className="form-control"
+                  id="inputPhone"
+                  rows="3"
+                  onChange={handleChange}
+                  value={form.phone || ""}
+                  name="phone"
+                ></input>
+              </div>
 
-            {/* <input
+              <div className="mb-3">
+                <label htmlFor="inputPhone" className="form-label">
+                  Rol
+                </label>
+                <select
+                  className="form-select"
+                  aria-label="Default select example"
+                  name="role_id"
+                  onChange={handleChange}
+                  value={form.role_id || ""}
+                >
+                  {Object.keys(rols).length > 0 &&
+                    rols.roles.map((rol) => (
+                      <option value={rol.id} key={rol.id}>
+                        {rol.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              {/* <input
               type="submit"
               value="Guardar"
               className="btn btn-primary me-3"
             /> */}
 
-            <input
-              type="submit"
-              className="btn btn-primary me-3"
-              value="Guardar"
-            />
-            <Link type="button" to={"/users"} className="btn btn-warning">
-              Cancelar
-            </Link>
-          </form>
+              <input
+                type="submit"
+                className="btn btn-primary me-3"
+                value="Guardar"
+              />
+              <Link type="button" to={"/users"} className="btn btn-warning">
+                Cancelar
+              </Link>
+            </form>
+          )}
         </div>
       </div>
     </div>

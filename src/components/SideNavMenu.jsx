@@ -68,7 +68,7 @@ const SideNavMenu = () => {
         >
           <nav className="sb-sidenav-menu-nested nav">
             <Link
-              to={"/headquaters"}
+              to={"/headquarters"}
               className="nav-link"
               href="layout-static.html"
             >
@@ -94,7 +94,7 @@ const SideNavMenu = () => {
           aria-controls="collapsePages"
         >
           <div className="sb-nav-link-icon">
-            <i className="fas fa-user" />
+          <i className="fa-solid fa-boxes-stacked"></i>
           </div>
           Inventario
           <div className="sb-sidenav-collapse-arrow">
@@ -113,19 +113,9 @@ const SideNavMenu = () => {
             </Link>
           </nav>
         </div>
-        <div className="sb-sidenav-menu-heading">Addons</div>
-        <a  className="nav-link" href="charts.html">
-          <div className="sb-nav-link-icon">
-            <i className="fas fa-chart-area" />
-          </div>
-          Charts
-        </a>
-        <Link to={""} className="nav-link" href="tables.html">
-          <div className="sb-nav-link-icon">
-            <i className="fas fa-table" />
-          </div>
-          Tables
-        </Link>
+        {/* <div className="sb-sidenav-menu-heading">Addons</div> */}
+        
+       
       </div>
     </div>
   );
