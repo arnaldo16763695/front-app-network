@@ -59,7 +59,8 @@ const EditHeadquarter = () => {
         body: form,
       })
       .then((res) => {
-        if (res.status === 201) {
+        console.log(res)
+        if (res.status === 200) {
             setMessage(res.message);
            return setTimeout(() => {
               setMessage("");
