@@ -18,6 +18,7 @@ const AddSpaces = () => {
   const auth = useSelector((state) => state.auth);
   const [message, setMessage] = useState("");
   const [failedMessage, setFailedMessage] = useState("");
+  const [failedMessage2, setFailedMessage2] = useState("");
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -46,7 +47,14 @@ const AddSpaces = () => {
               navigate("/spaces");
             }, 3000);
           }
-          if (!res.success) {
+          if (res.status === 200) {
+            setFailedMessage2(res.message);
+           return setTimeout(() => {
+            setFailedMessage2("/spaces");("");
+              
+            }, 6000);
+          }
+          if (res.message==="Errores de Validacion"){
             setFailedMessage(Object.entries(res.data));
            return setTimeout(() => {
               setFailedMessage("");
@@ -98,6 +106,12 @@ const AddSpaces = () => {
                 ))}
               </div>
             )}
+
+            {
+              failedMessage2 && <div className="alert alert-danger" role="alert">
+                {failedMessage2}
+              </div>
+            }
             <div className="mb-3">
               <label htmlFor="inputName" className="form-label fw-bold">
                 Nombre

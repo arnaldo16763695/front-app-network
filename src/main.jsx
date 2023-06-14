@@ -21,6 +21,7 @@ import AddHeadquarter from "./routes/ubications/headquaters/addHeadquarter";
 import EditHeadquarter from "./routes/ubications/headquaters/EditHeadquarter";
 import AddSpaces from "./routes/ubications/spaces/AddSpaces";
 import EditSpace from "./routes/ubications/spaces/EditSpace";
+import AddDevice from "./routes/inventary/devices/AddDevice";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -47,6 +48,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/edit-headquarter/:headquarter_id" element={<EditHeadquarter/>}></Route>
             <Route path="/add-space" element={<AddSpaces/>}></Route>
             <Route path="/edit-space/:space_id" element={<EditSpace/>}></Route>
+            <Route path="/add-device" element={<AddDevice/>}></Route>
             <Route
               path="/change-pass/:user_id"
               element={<ChangePassword />}

@@ -19,6 +19,7 @@ const EditSpace = () => {
   const [form, setForm] = useState(initialForm);
   const [message, setMessage] = useState("");
   const [failedMessage, setFailedMessage] = useState(null);
+  const [failedMessage2, setFailedMessage2] = useState(null);
   const [headquarters, setHeadquarters] = useState([]);
 
   const [loading, setLoading] = useState(false);
@@ -42,6 +43,13 @@ const EditSpace = () => {
             setMessage("");
             navigate("/spaces");
           }, 3000);
+        }
+        if (res.status === 200) {
+          setFailedMessage2(res.message);
+         return setTimeout(() => {
+          setFailedMessage2("");
+          
+          }, 6000);
         }
         if (!res.success) {
           setFailedMessage(Object.entries(res.data));
@@ -102,7 +110,7 @@ const EditSpace = () => {
     <div className="container">
       <div className="card mt-5">
         <div className="card-header d-flex justify-content-between">
-          <h4>Agregar Espacios</h4>
+          <h4>Editar Espacios</h4>
         </div>
         <div className="card-body">
           {loading ? (
@@ -125,6 +133,11 @@ const EditSpace = () => {
                   ))}
                 </div>
               )}
+              {
+                failedMessage2 && <div className="alert alert-danger" role="alert">
+                  {failedMessage2}
+                </div>
+              }
               <div className="mb-3">
                 <label htmlFor="inputName" className="form-label fw-bold">
                   Nombre

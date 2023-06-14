@@ -50,6 +50,7 @@ const EditHeadquarter = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     api
       .put(url, {
         method: "PUT",
