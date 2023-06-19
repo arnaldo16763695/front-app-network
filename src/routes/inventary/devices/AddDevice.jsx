@@ -6,23 +6,28 @@ import { helpHttp } from "../../../helpers/helpHttp";
 
 
 const initialForm = {
- 
+
 }
 const AddDevice = () => {
 
-    const [form, setForm] = useState(initialForm)
-    const handleSubmit=()=>{
-        
-    }
-    const handleChange=()=>{
+  const [form, setForm] = useState(initialForm)
+  const handleSubmit = () => {
 
-    }
+  }
+  const handleChange = () => {
+
+  }
 
   const url = `http://localhost:8000/api/locations`;
+  const url2 = `http://localhost:8000/api/headquarters`;
   const auth = useSelector((state) => state.auth);
   const [locations, setLocations] = useState([])
+  const [headquarters, setHeadquarters] = useState([]);
+
+  const [locationsSelect, setLocationsSelect] = useState("");
+  const [headquartersSelect, setHeadquartersSelect] = useState("");
   useEffect(() => {
-    
+
     helpHttp()
       .get(url, {
         headers: {
@@ -32,13 +37,49 @@ const AddDevice = () => {
       .then((res) => {
         if (!res.err) {
           setLocations(res.data);
+
+          if (res.message === "No hay datos disponibles") {
+            setLocations([]);
+          }
+          console.log(res)
         } else {
           setLocations([]);
           console.log(res.statusText);
         }
-        
+
       });
+
+    helpHttp()
+      .get(url2, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      })
+      .then((res) => {
+        if (!res.err) {
+          setHeadquarters(res.data);
+
+          if (res.message === "No hay datos disponibles") {
+            setHeadquarters([]);
+          }
+          console.log(res)
+        } else {
+          setHeadquarters([]);
+          console.log(res.statusText);
+        }
+
+      });
+
   }, [url, auth.token]);
+
+  const getAllLocationById=()=>{
+    
+  }
+
+  const handleChangeHeadquarter = (e)=>{
+      setHeadquarters(e.target.value);
+     // getAllLocationById(e.target.value);
+  }
   return (
     <div className="container">
       <div className="card mt-5">
@@ -62,7 +103,7 @@ const AddDevice = () => {
                 value={form.name}
               />
             </div>
-            
+
             <div className="mb-3">
               <label htmlFor="inputManufacturer" className="form-label fw-bold">
                 Marca
@@ -148,20 +189,38 @@ const AddDevice = () => {
               />
             </div>
             <div className="mb-3">
+              <label htmlFor="inputHeadquarter" className="form-label fw-bold">
+                Sucursal
+              </label>
+              <select
+                className="form-control"
+                name="headquarter_id"
+                onChange={handleChangeHeadquarter}
+              >
+                <option value={""}>Elija la sucursal...</option>
+                {
+                  headquarters.length && headquarters.map((el) => (
+                    <option key={el.id} value={el.id}>{el.name}</option>
+                  ))
+                }
+
+              </select>
+            </div>
+            <div className="mb-3">
               <label htmlFor="inputLocation_id" className="form-label fw-bold">
                 Localización
               </label>
               <select
                 className="form-control"
                 name="location_id"
-                onChange={handleChange}
+                onChange={(e)=>setLocationsSelect(e.target.value)}
               >
                 <option value={""}>Elija la localización...</option>
-                {
-                    locations.length && locations.map((el)=>(
-                        <option key={el.id} value={el.id}>{el.name}</option>
-                    ))
-                }
+                {/* {
+                  locations.length && locations.map((el) => (
+                    <option key={el.id} value={el.id}>{el.name}</option>
+                  ))
+                } */}
               </select>
             </div>
             <div className="mb-3">
@@ -174,7 +233,7 @@ const AddDevice = () => {
                 onChange={handleChange}
               >
                 <option value={""}>Elija el status...</option>
-              
+
               </select>
             </div>
             <div className="mb-3">
@@ -187,7 +246,7 @@ const AddDevice = () => {
                 onChange={handleChange}
               >
                 <option value={""}>Elija el tipo...</option>
-              
+
               </select>
             </div>
             <input

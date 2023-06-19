@@ -61,14 +61,14 @@ const EditHeadquarter = () => {
       })
       .then((res) => {
         console.log(res)
-        if (res.status === 200) {
+        if (res.status === 201) {
             setMessage(res.message);
            return setTimeout(() => {
               setMessage("");
               navigate("/headquarters");
             }, 3000);
           }
-          if (!res.success) {
+          if (res.menssage==='Errores de Validacion') {
             setFailedmessage(Object.entries(res.data));
           return  setTimeout(() => {
               setFailedmessage({});

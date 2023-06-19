@@ -50,7 +50,8 @@ const AddSpaces = () => {
           if (res.status === 200) {
             setFailedMessage2(res.message);
            return setTimeout(() => {
-            setFailedMessage2("/spaces");("");
+            setFailedMessage2("");
+            navigate("/spaces");
               
             }, 6000);
           }
