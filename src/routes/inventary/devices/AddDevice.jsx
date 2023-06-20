@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState  } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { helpHttp } from "../../../helpers/helpHttp";
@@ -6,26 +6,38 @@ import Select from "../../../components/Select";
 
 const initialForm = {};
 const AddDevice = () => {
-
-  const urlLocations = `http://localhost:8000/api/locations`;
+  // const urlLocations = `http://localhost:8000/api/locations`;
   const urlTypes = `http://localhost:8000/api/types`;
+  const urlpost = `http://localhost:8000/api/devices/register`;
   const urlStatus = `http://localhost:8000/api/status`;
   const urlHeadquarters = `http://localhost:8000/api/headquarters`;
   const locHead = `http://localhost:8000/api/locHead/`;
   const auth = useSelector((state) => state.auth);
-  const [locations, setLocations] = useState([]);
-  const [headquarter, setHeadquarters] = useState('');
+  // const [locations, setLocations] = useState([]);
+  // const [headquarter, setHeadquarters] = useState("");
   const [locationsSelect, setLocationsSelect] = useState("");
   const [headquartersSelect, setHeadquartersSelect] = useState("");
-  const [statusSelect, setStatusSelect] = useState("");
+  // const [statusSelect, setStatusSelect] = useState("");
   const [form, setForm] = useState(initialForm);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({
+    const formData = {
       ...form,
-      headquarter_id: headquartersSelect
-    });
+      headquarter_id: headquartersSelect,
+    };
+    console.log(formData)
+    helpHttp()
+      .post(urlpost, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+        body: formData,
+      })
+      .then((res) => {
+       console.log(res.data)
+      });
   };
 
   const handleChange = (e) => {
@@ -35,29 +47,27 @@ const AddDevice = () => {
     });
   };
 
- 
+  // useEffect(() => {
+  //   helpHttp()
+  //     .get(urlHeadquarters, {
+  //       headers: {
+  //         Authorization: `Bearer ${auth.token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       if (!res.err) {
+  //         setHeadquarters(res.data);
 
-  useEffect(() => {
-       helpHttp()
-      .get(urlHeadquarters, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
-        },
-      })
-      .then((res) => {
-        if (!res.err) {
-          setHeadquarters(res.data);
-
-          if (res.message === "No hay datos disponibles") {
-            setHeadquarters([]);
-          }
-          console.log(res);
-        } else {
-          setHeadquarters([]);
-          console.log(res.statusText);
-        }
-      });
-  }, [urlLocations, auth.token]);
+  //         if (res.message === "No hay datos disponibles") {
+  //           setHeadquarters([]);
+  //         }
+  //         console.log(res);
+  //       } else {
+  //         setHeadquarters([]);
+  //         console.log(res.statusText);
+  //       }
+  //     });
+  // }, [urlHeadquarters, auth.token]);
 
   const getAllLocationById = (id) => {
     helpHttp()
@@ -180,7 +190,7 @@ const AddDevice = () => {
               />
             </div>
 
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <label htmlFor="inputHeadquarter" className="form-label fw-bold">
                 Sucursal
               </label>
@@ -197,8 +207,8 @@ const AddDevice = () => {
                     </option>
                   ))}
               </select>
-            </div>
-            {/* <Select  url={urlHeadquarters} title={'Sucursal'} nameInput={'headquarter'} placeholder={'Elije una sucursal'} handleChange={handleChangeHeadquarter} /> */}
+            </div> */}
+            <Select  url={urlHeadquarters} title={'Sucursal'} nameInput={'headquarter'} placeholder={'Elije una sucursal'} handleChange={handleChangeHeadquarter} />
 
             <div className="mb-3">
               <label htmlFor="inputLocation_id" className="form-label fw-bold">
@@ -218,9 +228,21 @@ const AddDevice = () => {
                   ))}
               </select>
             </div>
-            <Select  url={urlStatus} title={'Status'} nameInput={'status_id'} placeholder={'Elije un status'} handleChange={handleChange} />
-            <Select  url={urlTypes} title={'Tipo de dispositvo'} nameInput={'type_id'} placeholder={'Elije un tipo'} handleChange={handleChange} />
-           
+            <Select
+              url={urlStatus}
+              title={"Status"}
+              nameInput={"status_id"}
+              placeholder={"Elije un status"}
+              handleChange={handleChange}
+            />
+            <Select
+              url={urlTypes}
+              title={"Tipo de dispositvo"}
+              nameInput={"type_id"}
+              placeholder={"Elije un tipo"}
+              handleChange={handleChange}
+            />
+
             <div className="mb-3">
               <label htmlFor="inputObservation" className="form-label fw-bold">
                 Observación
@@ -240,7 +262,7 @@ const AddDevice = () => {
               className="btn btn-primary me-3"
               value="Guardar"
             />
-            <Link type="button" to={"/spaces"} className="btn btn-warning">
+            <Link type="button" to={"/devices"} className="btn btn-warning">
               Cancelar
             </Link>
           </form>

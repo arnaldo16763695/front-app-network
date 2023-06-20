@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { helpHttp } from "../helpers/helpHttp";
 import { useSelector } from "react-redux";
 
-const Select = ({url, handleChange, placeholder, nameInput, title}) => {
+const Select = ({url, handleChange, placeholder, nameInput, title, value}) => {
   const auth = useSelector((state) => state.auth);
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -17,9 +17,9 @@ const Select = ({url, handleChange, placeholder, nameInput, title}) => {
           setData(res.data);
          
        
-        console.log(res.data)
+        console.log(res)
       });
-  }, []);
+  }, [auth.token, url]);
 
   return (
     <div className="mb-3">
@@ -30,6 +30,7 @@ const Select = ({url, handleChange, placeholder, nameInput, title}) => {
         className="form-control"
         name={nameInput}
         onChange={handleChange}
+        value={value}
       >
         <option value={""}>{placeholder}</option>
         {data.length &&

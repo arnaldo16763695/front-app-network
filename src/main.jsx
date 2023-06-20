@@ -15,13 +15,14 @@ import HeadquatersManagment from "./routes/ubications/headquaters/HeadquatersMan
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import EditUser from "./routes/users/EditUser";
 import ChangePassword from "./routes/users/ChangePassword";
-import Devices from "./routes/inventary/devices/Devices";
 import Spaces from "./routes/ubications/spaces/Spaces";
 import AddHeadquarter from "./routes/ubications/headquaters/addHeadquarter";
 import EditHeadquarter from "./routes/ubications/headquaters/EditHeadquarter";
 import AddSpaces from "./routes/ubications/spaces/AddSpaces";
 import EditSpace from "./routes/ubications/spaces/EditSpace";
 import AddDevice from "./routes/inventary/devices/AddDevice";
+import DevicesManagment from "./routes/inventary/devices/DevicesManagment";
+import EditDevice from "./routes/inventary/devices/EditDevice";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -42,13 +43,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/users" element={<UserManagment />}></Route>
             <Route path="/add-User" element={<AddUser />}></Route>
             <Route path="/edit-user/:user_id" element={<EditUser />}></Route>
-            <Route path="/devices" element={<Devices />}></Route>
+            <Route path="/devices" element={<DevicesManagment />}></Route>
             <Route path="/spaces" element={<Spaces />}></Route>
             <Route path="/add-headquarter" element={<AddHeadquarter/>}></Route>
             <Route path="/edit-headquarter/:headquarter_id" element={<EditHeadquarter/>}></Route>
             <Route path="/add-space" element={<AddSpaces/>}></Route>
             <Route path="/edit-space/:space_id" element={<EditSpace/>}></Route>
             <Route path="/add-device" element={<AddDevice/>}></Route>
+            <Route path="/edit-device/:idDevice" element={<EditDevice/>}></Route>
             <Route
               path="/change-pass/:user_id"
               element={<ChangePassword />}
