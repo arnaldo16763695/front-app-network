@@ -1,58 +1,50 @@
-import { useEffect, useState } from "react";
-import DataTable, { createTheme } from "react-data-table-component";
+
 import { Link } from "react-router-dom";
-import "styled-components";
+import DataTable, { createTheme } from "react-data-table-component";
+import { useEffect, useState } from "react";
+import { helpHttp } from "../../../helpers/helpHttp";
 import { useSelector } from "react-redux";
 import { Loader } from "../../../components/Loader";
-import { helpHttp } from "../../../helpers/helpHttp";
 
-const HeadquatersManagment = () => {
-  const api = helpHttp();
+const TypesDevices = () => {
+  const [loading, setLoading] = useState(false)
+  const [types, setTypes] = useState([]);
   const auth = useSelector((state) => state.auth);
-  const [headquaters, setHeadquaters] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const url = `http://localhost:8000/api/headquarters`;
-
+  const url = `http://localhost:8000/api/types`;
+  
   useEffect(() => {
-    api
+    setLoading(true);
+    helpHttp()
       .get(url, {
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
       })
       .then((res) => {
-        setLoading(true);
+       
         if (!res.err) {
-          setHeadquaters(res.data);
+          setTypes(res.data);
         } else {
-          setHeadquaters({});
+          setTypes([]);
         }
         setLoading(false);
       });
   }, []); 
 
+  
   const columns = [
     {
-      name: "NOMBRE",
+      name: "STATUS",
       selector: (row) => row.name,
       sortable: true,
     },
-    {
-      name: "ESTADO",
-      selector: (row) => row.state,
-      sortable: true,
-    },
-    {
-      name: "CIUDAD",
-      selector: (row) => row.city,
-      sortable: true,
-    },
+  
 
     {
       name: "ACCIÓN",
       selector: (row) => (
         <>
-          <Link to={`/edit-headquarter/${row.id}`} className="me-3">
+          <Link to={`/edit-types/${row.id}`} className="me-3">
             <i className="fas fa-pencil" />
           </Link>{" "}
           <Link to={""}>
@@ -90,23 +82,22 @@ const HeadquatersManagment = () => {
     },
     "dark"
   );
-
   return (
     <div className="container">
       <div className="card mt-5">
         <div className="card-header d-flex justify-content-between">
-          <h4>Sucursales</h4>
-          <Link to={"/add-headquarter"} className="btn btn-primary">
+          <h4>Tipos de dispositivos</h4>
+          <Link to={"/add-types-devices"} className="btn btn-primary">
             <i className="fas fa-user-plus" />
           </Link>
         </div>
-        <div className="card-body-ppp">
-          {loading ? (
+        <div className="card-body">
+        {loading ? (
             <Loader />
           ) : (
             <DataTable
               columns={columns}
-              data={headquaters}
+              data={types}
               pagination
               theme="custom"
             />
@@ -117,4 +108,4 @@ const HeadquatersManagment = () => {
   );
 };
 
-export default HeadquatersManagment;
+export default TypesDevices;

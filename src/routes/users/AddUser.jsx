@@ -97,7 +97,7 @@ const AddUser = () => {
           <h4>Crear Usuario</h4>
         </div>
         <div className="card-body">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="off">
             {successMessage && (
               <div className="alert alert-success" role="alert">
                 {successMessage}

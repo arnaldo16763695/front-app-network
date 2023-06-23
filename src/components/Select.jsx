@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { helpHttp } from "../helpers/helpHttp";
 import { useSelector } from "react-redux";
 
-const Select = ({url, handleChange, placeholder, nameInput, title, value}) => {
+const Select = ({url, handleChange, placeholder, nameInput, title, valueSelect}) => {
   const auth = useSelector((state) => state.auth);
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -14,23 +14,28 @@ const Select = ({url, handleChange, placeholder, nameInput, title, value}) => {
       })
       .then((res) => {
         
+        if (res.message==='No hay datos disponibles') {
+          setData([])
+        }else{
+
           setData(res.data);
+        }
          
        
-        console.log(res)
+         console.log(res)
       });
   }, [auth.token, url]);
 
   return (
     <div className="mb-3">
       <label htmlFor="inputHeadquarter" className="form-label fw-bold">
-        {title}
+        {  title}
       </label>
       <select
         className="form-control"
         name={nameInput}
         onChange={handleChange}
-        value={value}
+        value={valueSelect}
       >
         <option value={""}>{placeholder}</option>
         {data.length &&

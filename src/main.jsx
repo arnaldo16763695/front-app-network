@@ -23,6 +23,12 @@ import EditSpace from "./routes/ubications/spaces/EditSpace";
 import AddDevice from "./routes/inventary/devices/AddDevice";
 import DevicesManagment from "./routes/inventary/devices/DevicesManagment";
 import EditDevice from "./routes/inventary/devices/EditDevice";
+import TypesDevices from "./routes/inventary/devices/TypesDevices";
+import StatusDevices from "./routes/inventary/devices/StatusDevices";
+import AddStatus from "./routes/inventary/devices/AddStatus";
+import AddTypes from "./routes/inventary/devices/addTypes";
+import EditStatus from "./routes/inventary/devices/EditStatus";
+import EditTypes from "./routes/inventary/devices/EditTypes";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -51,6 +57,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/edit-space/:space_id" element={<EditSpace/>}></Route>
             <Route path="/add-device" element={<AddDevice/>}></Route>
             <Route path="/edit-device/:idDevice" element={<EditDevice/>}></Route>
+            <Route path="/types-device" element={<TypesDevices/>}></Route>
+            <Route path="/status-device" element={<StatusDevices/>}></Route>
+            <Route path="/add-status-devices" element={<AddStatus/>}></Route>
+            <Route path="/add-types-devices" element={<AddTypes/>}></Route>
+            <Route path="/edit-status/:idStatus" element={<EditStatus/>}></Route>
+            <Route path="/edit-types/:idType" element={<EditTypes/>}></Route>
             <Route
               path="/change-pass/:user_id"
               element={<ChangePassword />}

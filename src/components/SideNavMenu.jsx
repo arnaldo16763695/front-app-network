@@ -112,6 +112,16 @@ const SideNavMenu = () => {
               Dispositivos
             </Link>
           </nav>
+          <nav className="sb-sidenav-menu-nested nav">
+            <Link to={"status-device"} className="nav-link" href="layout-static.html">
+              Status 
+            </Link>
+          </nav>
+          <nav className="sb-sidenav-menu-nested nav">
+            <Link to={"types-device"} className="nav-link" href="layout-static.html">
+              Tipos 
+            </Link>
+          </nav>
         </div>
         {/* <div className="sb-sidenav-menu-heading">Addons</div> */}
         

@@ -96,7 +96,7 @@ const ChangePassword = () => {
           <h4>Cambiar contraseña de: {dataUser?.name}</h4>
         </div>
         <div className="card-body">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} autoComplete="off">
             {successMessage && (
               <div className="alert alert-success" role="alert">
                 {successMessage}

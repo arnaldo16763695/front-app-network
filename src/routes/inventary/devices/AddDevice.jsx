@@ -22,21 +22,21 @@ const AddDevice = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = {
-      ...form,
-      headquarter_id: headquartersSelect,
-    };
-    console.log(formData)
+    // const formData = {
+    //   ...form,
+    //   headquarter_id: headquartersSelect,
+    // };
+    console.log(form)
     helpHttp()
       .post(urlpost, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
-        body: formData,
+        body: form,
       })
       .then((res) => {
-       console.log(res.data)
+       console.log(res)
       });
   };
 
