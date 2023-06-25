@@ -16,7 +16,7 @@ const EditStatus = () => {
   const api = helpHttp();
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     api
       .put(url, {
         method: "PUT",
@@ -26,21 +26,21 @@ const EditStatus = () => {
         body: form,
       })
       .then((res) => {
-        console.log(res, url)
+        console.log(res, url);
         if (res.status === 200) {
-            setMessage(res.message);
-           return setTimeout(() => {
-              setMessage("");
-              navigate("/status-device");
-            }, 3000);
-          }
-          if (res.menssage==='Errores de Validacion') {
-            setFailMessage(Object.entries(res.data));
-          return  setTimeout(() => {
-              setFailMessage({});
-            }, 6000);
-          }
-          console.log(res);
+          setMessage(res.message);
+          return setTimeout(() => {
+            setMessage("");
+            navigate("/status-device");
+          }, 3000);
+        }
+        if (res.message === "Errores de Validacion") {
+          setFailMessage(Object.entries(res.data));
+          return setTimeout(() => {
+            setFailMessage({});
+          }, 6000);
+        }
+        console.log(res);
       });
   };
 
@@ -79,7 +79,18 @@ const EditStatus = () => {
       </div>
       <div className="card-body">
         {message && <div className="alert alert-success">{message}</div>}
-        {failMessage && <div className="alert alert-danger">{failMessage}</div>}
+        {message && <div className="alert alert-success">{message}</div>}
+        {Object.keys(failMessage).length > 0 && (
+          <div className="alert alert-danger" role="alert">
+            {failMessage.map(([key, value]) => (
+              <ul key={key}>
+                {value.map((el, id) => (
+                  <li key={id}>{el}</li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        )}
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="mb-3">
             <label htmlFor="name" className="form-label">

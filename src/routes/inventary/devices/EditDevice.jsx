@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { helpHttp } from "../../../helpers/helpHttp";
 import { useSelector } from "react-redux";
 import Select from "../../../components/Select";
@@ -27,16 +27,46 @@ const EditDevice = () => {
   const urlTypes = `http://localhost:8000/api/types`;
 
   const [locationsSelect, setLocationsSelect] = useState([]);
-  const [locations, setLocations] = useState([]);
   const auth = useSelector((state) => state.auth);
   const locHead = `http://localhost:8000/api/locHead/`;
   const urlStatus = `http://localhost:8000/api/status`;
-  const [device, setDevice] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [failMessage, setFailMessage] = useState("");
+  const api = helpHttp();
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(form);
+    api
+      .put(url, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+        body: form,
+      })
+      .then((res) => {
+        console.log(res, url);
+        if (res.status === 201) {
+          setMessage(res.message);
+          return setTimeout(() => {
+            setMessage("");
+            navigate("/devices");
+          }, 3000);
+        }
+        if (res.message === "Errores de Validacion") {
+          
+          setFailMessage(Object.entries(res.data));
+          return setTimeout(() => {
+            setFailMessage({});
+          }, 6000);
+        }
+        console.log(res);
+      });
   };
+
   useEffect(() => {
     setLoading(true);
     helpHttp()
@@ -59,8 +89,8 @@ const EditDevice = () => {
           status_id: res.data[0].status.id,
           type_id: res.data[0].type.id,
         });
-        setDevice(res.data[0]);
-        // console.log(res.data[0].location.id);
+        console.log(res.data[0].location.id);
+        getAllLocationById(res.data[0].location.headquarter.id);
         setLoading(false);
       });
   }, [url, auth.token]);
@@ -88,12 +118,8 @@ const EditDevice = () => {
     }
   };
 
-  useEffect(() => {
-    getAllLocationById(idDevice);
-  }, []);
-
   const getAllLocationById = (id) => {
-     
+    console.log(id);
     helpHttp()
       .get(`${locHead}${id}`, {
         headers: {
@@ -103,7 +129,7 @@ const EditDevice = () => {
       .then((res) => {
         if (!res.err) {
           setLocationsSelect(res.locations);
-          console.log(res)
+          console.log(res);
           if (res.message === "No hay datos disponibles") {
             setLocationsSelect([]);
           }
@@ -122,8 +148,20 @@ const EditDevice = () => {
           <h4>Editar Dispositivo</h4>
         </div>
         <div className="card-body">
-          {loading && <Loader /> || (
+          {(loading && <Loader />) || (
             <form onSubmit={handleSubmit}>
+              {message && <div className="alert alert-success">{message}</div>}
+              {Object.keys(failMessage).length > 0 && (
+                <div className="alert alert-danger" role="alert">
+                  {failMessage.map(([key, value]) => (
+                    <ul key={key}>
+                      {value.map((el, id) => (
+                        <li key={id}>{el}</li>
+                      ))}
+                    </ul>
+                  ))}
+                </div>
+              )}
               <div className="mb-3">
                 <label htmlFor="inputName" className="form-label fw-bold">
                   Nombre
@@ -251,7 +289,7 @@ const EditDevice = () => {
                   className="form-control"
                   name="location_id"
                   onChange={handleChange}
-                  value={form.headquarter_id}
+                  value={form.location_id}
                 >
                   <option value="">Elija la localización...</option>
 

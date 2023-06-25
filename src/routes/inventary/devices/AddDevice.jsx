@@ -16,7 +16,6 @@ const AddDevice = () => {
   // const [locations, setLocations] = useState([]);
   // const [headquarter, setHeadquarters] = useState("");
   const [locationsSelect, setLocationsSelect] = useState("");
-  const [headquartersSelect, setHeadquartersSelect] = useState("");
   // const [statusSelect, setStatusSelect] = useState("");
   const [form, setForm] = useState(initialForm);
   const [successMessage, setSuccessMessage] = useState("");
@@ -89,7 +88,6 @@ const AddDevice = () => {
   };
 
   const handleChangeHeadquarter = (e) => {
-    setHeadquartersSelect(e.target.value);
     getAllLocationById(e.target.value);
   };
 
