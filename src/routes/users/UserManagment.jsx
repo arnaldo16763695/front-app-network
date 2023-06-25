@@ -2,34 +2,117 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Loader } from "../../components/Loader";
 import { useSelector } from "react-redux";
+import { helpHttp } from "../../helpers/helpHttp";
+import DataTable, { createTheme } from "react-data-table-component";
+import ActionEdit from "../../components/ActionEdit";
+import ActionDelete from "../../components/ActionDelete";
+import ActionKey from "../../components/ActionKey";
 
 const UserManagment = () => {
   const url = `http://localhost:8000/api/user`;
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const auth = useSelector((state) => state.auth);
+  // const getCookie = (cname) => {
+  //   let name = cname + "=";
+  //   let decodedCookie = decodeURIComponent(document.cookie);
+  //   let ca = decodedCookie.split(";");
+  //   for (let i = 0; i < ca.length; i++) {
+  //     let c = ca[i];
+  //     while (c.charAt(0) == " ") {
+  //       c = c.substring(1);
+  //     }
+  //     if (c.indexOf(name) == 0) {
+  //       return c.substring(name.length, c.length);
+  //     }
+  //   }
+  //   return "";
+  // };
 
-  const getUsers = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch(url, {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${auth.token}`,
-          },
-        }),
-        usersData = await res.json();
-      console.log(usersData);
-      setUsers(usersData);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const id_rol = getCookie("roleId");
+
   useEffect(() => {
-    getUsers();
-  }, []);
+    setLoading(true);
+    helpHttp()
+      .get(url, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      })
+      .then((res) => {
+        if (!res.err) {
+          setUsers(res.data);
+          // console.log(res.data);
+        } else {
+          setUsers([]);
+        }
+        setLoading(false);
+      });
+  }, [url, auth.token]);
+  // console.log(auth.token);
+  const columns = [
+    {
+      name: "NOMBRE",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      name: "EMAIL",
+      selector: (row) => row.email,
+      sortable: true,
+    },
+    {
+      name: "TELÉFONO",
+      selector: (row) => row.phone,
+      sortable: true,
+    },
+    {
+      name: "ROL",
+      selector: (row) => row.roles[0].name,
+      sortable: true,
+    },
 
+    {
+      name: "ACCIÓN",
+      selector: (row) => (
+        <>
+          <ActionEdit link={`/edit-user/${row.id}`} />
+
+          <ActionKey link={`/change-pass/${row.id}`} />
+
+          <ActionDelete link={``} />
+        </>
+      ),
+      sortable: true,
+    },
+  ];
+
+  // createTheme creates a new theme named solarized that overrides the build in dark theme
+  createTheme(
+    "custom",
+    {
+      text: {
+        primary: "#000",
+        secondary: "#000",
+      },
+      background: {
+        default: "#EAECEE",
+      },
+      context: {
+        background: "#cb4b16",
+        text: "#FFFFFF",
+      },
+      divider: {
+        default: "#fff",
+      },
+      action: {
+        button: "rgba(0,0,0,.54)",
+        hover: "rgba(0,0,0,.08)",
+        disabled: "rgba(0,0,0,.12)",
+      },
+    },
+    "dark"
+  );
   return (
     <div className="container">
       <div className="card mt-5">
@@ -40,44 +123,16 @@ const UserManagment = () => {
           </Link>
         </div>
         <div className="card-body">
-          <div className="table-responsive">
+          <div className="card-body-ppp">
             {loading ? (
               <Loader />
             ) : (
-              <table className="table table-responsive">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nombre y Apellido</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Teléfono</th>
-                    <th scope="col">Rol</th>
-                    <th scope="col">Acción</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.data?.map((user) => (
-                    <tr key={user.id}>
-                      <th>{user.id}</th>
-                      <td>{user.name}</td>
-                      <td>{user.email}</td>
-                      <td>{user.phone}</td>
-                      <td>{user.roles[0].name}</td>
-                      <td>
-                        <Link to={`/edit-user/${user.id}`} className="me-3" title="Editar este usuario">
-                          <i className="fas fa-pencil" />
-                        </Link>{" "}
-                        <Link to={`/change-pass/${user.id}`} className="me-3" title="Cambiar el password del usuario">
-                          <i className="fa-solid fa-key"></i>
-                        </Link>
-                        <Link to={""} title="Eliminar este usuario">
-                          <i className="fas fa-trash"></i>
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <DataTable
+                columns={columns}
+                data={users}
+                pagination
+                theme="custom"
+              />
             )}
           </div>
         </div>

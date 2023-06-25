@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { helpHttp } from "../../../helpers/helpHttp";
 import { useSelector } from "react-redux";
 import { Loader } from "../../../components/Loader";
-import { Link } from "react-router-dom";
 import DataTable, { createTheme } from "react-data-table-component";
+import ActionEdit from "../../../components/ActionEdit";
+import ActionDelete from "../../../components/ActionDelete";
+import { BtnAdd } from "../../../components/BtnAdd";
 
 const Spaces = () => {
-  
   const url = `http://localhost:8000/api/locations`;
   const auth = useSelector((state) => state.auth);
   const [locations, setLocations] = useState([]);
@@ -51,12 +52,8 @@ const Spaces = () => {
       name: "ACCIÓN",
       selector: (row) => (
         <>
-          <Link to={`/edit-space/${row.id}`} className="me-3">
-            <i className="fas fa-pencil" />
-          </Link>{" "}
-          <Link to={""}>
-            <i className="fas fa-trash" />
-          </Link>
+          <ActionEdit link={`/edit-space/${row.id}`} />
+          <ActionDelete link={``} />
         </>
       ),
       sortable: true,
@@ -93,9 +90,8 @@ const Spaces = () => {
       <div className="card mt-5">
         <div className="card-header d-flex justify-content-between">
           <h4>Espacios</h4>
-          <Link to={"/add-space"} className="btn btn-primary">
-            <i className="fas fa-user-plus" />
-          </Link>
+          
+          <BtnAdd link={"/add-space"}/>
         </div>
         <div className="card-body">
           {loading ? (

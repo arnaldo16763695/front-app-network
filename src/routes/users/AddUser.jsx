@@ -30,7 +30,7 @@ const AddUser = () => {
       });
 
       const json = await res.json();
-      console.log(json.message);
+      //console.log(json.message);
       if (json.message === "Registro creado") {
         setSuccessMessage(json.message);
         setTimeout(() => {
@@ -41,7 +41,7 @@ const AddUser = () => {
       if (json.message === "Errores de Validacion") {
         setFailMessage(Object.entries(json.data));
         setTimeout(() => {
-          setFailMessage({});
+          setFailMessage({}); 
         }, 6000);
         console.log(Object.entries(json.data));
       }

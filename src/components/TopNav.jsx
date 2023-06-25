@@ -46,9 +46,13 @@ const TopNav = () => {
 
   // logout in frontend, modifies localstore
   const logout = () => {
-    localStorage.removeItem("tokenNetwork");
-    localStorage.removeItem("roleId");
-    localStorage.removeItem("userName");
+    // localStorage.removeItem("tokenNetwork");
+    // localStorage.removeItem("roleId");
+    // localStorage.removeItem("userName");
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "roleName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "roleId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     dispatch(removeAuth());
     logoutSession();
     navigate("/login");
@@ -111,7 +115,7 @@ const TopNav = () => {
             aria-labelledby="navbarDropdown"
           >
             <li>
-              <Link to={""} className="dropdown-item" href="#!">
+              <Link to={"profile"} className="dropdown-item" href="#!">
                 Mi perfil
               </Link>
             </li>

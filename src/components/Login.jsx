@@ -5,7 +5,7 @@ const initialForm = {
   password: "",
 };
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux"; 
+import { useSelector, useDispatch } from "react-redux";
 import { addAuth } from "../features/auth/authSlice";
 
 const Login = () => {
@@ -24,7 +24,7 @@ const Login = () => {
     if (auth.token) {
       navigate("/");
     }
-  } );
+  });
 
   const login = async () => {
     try {
@@ -39,11 +39,20 @@ const Login = () => {
       console.log(data);
       if (!res.ok) throw { status: res.status, statusText: res.statusText };
       // document.cookie = `tokenNetwork=${data.token}; path=/; max-age=7200`;
-      localStorage.setItem("tokenNetwork", data.token);
-      localStorage.setItem("roleId", data.role_id);
-      localStorage.setItem("userName", data.user_name);
-      dispatch(addAuth(data.token));
-
+      // localStorage.setItem("tokenNetwork", data.token);
+      // localStorage.setItem("roleId", data.role_id);
+      // localStorage.setItem("userName", data.user_name);
+      document.cookie = `token=${data.token}; path=/; max-age=7200`;
+      document.cookie = `roleName=${data.role_name}; path=/; max-age=7200`;
+      document.cookie = `userName=${data.user_name}; path=/; max-age=7200`;
+      document.cookie = `roleId=${data.role_id}; path=/; max-age=7200`;
+      const dataAuth = {
+        token: data.token,
+        userName: data.user_name,
+        roleId: data.role_id,
+        roleName: data.role_name,
+      }
+      dispatch(addAuth(dataAuth));
       navigate("/");
     } catch (error) {
       let message = error.statusText || "Ocurrió un error";
@@ -56,6 +65,8 @@ const Login = () => {
       }
     }
   };
+
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.email.trim() || !form.password.trim()) {

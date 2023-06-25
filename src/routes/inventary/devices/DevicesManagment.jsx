@@ -1,9 +1,13 @@
 import DataTable, { createTheme } from "react-data-table-component";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Loader } from "../../../components/Loader";
 import { helpHttp } from "../../../helpers/helpHttp";
 import { useSelector } from "react-redux";
+import ActionEdit from "../../../components/ActionEdit";
+import ActionDelete from "../../../components/ActionDelete";
+import { BtnAdd } from "../../../components/BtnAdd";
+
+
 const DevicesManagment = () => {
   const auth = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
@@ -18,10 +22,9 @@ const DevicesManagment = () => {
         },
       })
       .then((res) => {
-        
         if (!res.err) {
           setDevices(res.data);
-          console.log(res.data)
+          console.log(res.data);
         } else {
           setDevices([]);
         }
@@ -84,12 +87,9 @@ const DevicesManagment = () => {
       name: "ACCIÓN",
       selector: (row) => (
         <>
-          <Link to={`/edit-device/${row.id}`} className="me-3">
-            <i className="fas fa-pencil" />
-          </Link>{" "}
-          <Link to={""}>
-            <i className="fas fa-trash" />
-          </Link>
+          <ActionEdit link={`/edit-device/${row.id}`} />
+          
+          <ActionDelete link={``} />
         </>
       ),
       sortable: true,
@@ -125,9 +125,7 @@ const DevicesManagment = () => {
       <div className="card mt-5">
         <div className="card-header d-flex justify-content-between">
           <h4>Administración de dispositivos</h4>
-          <Link to={"/add-device"} className="btn btn-primary">
-            <i className="fas fa-user-plus" />
-          </Link>
+          <BtnAdd link={"/add-device"}/>
         </div>
         <div className="card-body-ppp">
           {loading ? (

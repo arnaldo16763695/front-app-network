@@ -1,17 +1,18 @@
-
-import { Link } from "react-router-dom";
 import DataTable, { createTheme } from "react-data-table-component";
 import { useEffect, useState } from "react";
 import { helpHttp } from "../../../helpers/helpHttp";
 import { useSelector } from "react-redux";
 import { Loader } from "../../../components/Loader";
+import ActionEdit from "../../../components/ActionEdit";
+import ActionDelete from "../../../components/ActionDelete";
+import { BtnAdd } from "../../../components/BtnAdd";
 
 const StatusDevices = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState([]);
   const auth = useSelector((state) => state.auth);
   const url = `http://localhost:8000/api/status`;
-  
+
   useEffect(() => {
     setLoading(true);
     helpHttp()
@@ -21,7 +22,6 @@ const StatusDevices = () => {
         },
       })
       .then((res) => {
-       
         if (!res.err) {
           setStatus(res.data);
         } else {
@@ -29,27 +29,21 @@ const StatusDevices = () => {
         }
         setLoading(false);
       });
-  }, []); 
+  }, []);
 
-  
   const columns = [
     {
       name: "STATUS",
       selector: (row) => row.name,
       sortable: true,
     },
-  
 
     {
       name: "ACCIÓN",
       selector: (row) => (
         <>
-          <Link to={`/edit-status/${row.id}`} className="me-3">
-            <i className="fas fa-pencil" />
-          </Link>{" "}
-          <Link to={""}>
-            <i className="fas fa-trash" />
-          </Link>
+          <ActionEdit link={`/edit-status/${row.id}`} />
+          <ActionDelete link={``} />
         </>
       ),
       sortable: true,
@@ -87,12 +81,11 @@ const StatusDevices = () => {
       <div className="card mt-5">
         <div className="card-header d-flex justify-content-between">
           <h4>Status de dispositivos</h4>
-          <Link to={"/add-status-devices"} className="btn btn-primary">
-            <i className="fas fa-user-plus" />
-          </Link>
+
+          <BtnAdd link={"/add-status-devices"} />
         </div>
         <div className="card-body">
-        {loading ? (
+          {loading ? (
             <Loader />
           ) : (
             <DataTable

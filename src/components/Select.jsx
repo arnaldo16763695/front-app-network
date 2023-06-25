@@ -22,7 +22,7 @@ const Select = ({url, handleChange, placeholder, nameInput, title, valueSelect})
         }
          
        
-         console.log(res)
+        //  console.log(res)
       });
   }, [auth.token, url]);
 

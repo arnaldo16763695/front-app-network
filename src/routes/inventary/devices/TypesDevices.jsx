@@ -1,17 +1,18 @@
-
-import { Link } from "react-router-dom";
 import DataTable, { createTheme } from "react-data-table-component";
 import { useEffect, useState } from "react";
 import { helpHttp } from "../../../helpers/helpHttp";
 import { useSelector } from "react-redux";
 import { Loader } from "../../../components/Loader";
+import ActionEdit from "../../../components/ActionEdit";
+import ActionDelete from "../../../components/ActionDelete";
+import { BtnAdd } from "../../../components/BtnAdd";
 
 const TypesDevices = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState([]);
   const auth = useSelector((state) => state.auth);
   const url = `http://localhost:8000/api/types`;
-  
+
   useEffect(() => {
     setLoading(true);
     helpHttp()
@@ -21,7 +22,6 @@ const TypesDevices = () => {
         },
       })
       .then((res) => {
-       
         if (!res.err) {
           setTypes(res.data);
         } else {
@@ -29,27 +29,21 @@ const TypesDevices = () => {
         }
         setLoading(false);
       });
-  }, []); 
+  }, []);
 
-  
   const columns = [
     {
       name: "STATUS",
       selector: (row) => row.name,
       sortable: true,
     },
-  
 
     {
       name: "ACCIÓN",
       selector: (row) => (
         <>
-          <Link to={`/edit-types/${row.id}`} className="me-3">
-            <i className="fas fa-pencil" />
-          </Link>{" "}
-          <Link to={""}>
-            <i className="fas fa-trash" />
-          </Link>
+          <ActionEdit link={`/edit-types/${row.id}`} />
+          <ActionDelete link={``} />
         </>
       ),
       sortable: true,
@@ -87,12 +81,11 @@ const TypesDevices = () => {
       <div className="card mt-5">
         <div className="card-header d-flex justify-content-between">
           <h4>Tipos de dispositivos</h4>
-          <Link to={"/add-types-devices"} className="btn btn-primary">
-            <i className="fas fa-user-plus" />
-          </Link>
+
+          <BtnAdd link={"/add-types-devices"} />
         </div>
         <div className="card-body">
-        {loading ? (
+          {loading ? (
             <Loader />
           ) : (
             <DataTable

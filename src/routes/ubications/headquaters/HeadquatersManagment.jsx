@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import DataTable, { createTheme } from "react-data-table-component";
-import { Link } from "react-router-dom";
+
 import "styled-components";
 import { useSelector } from "react-redux";
 import { Loader } from "../../../components/Loader";
 import { helpHttp } from "../../../helpers/helpHttp";
+import ActionEdit from "../../../components/ActionEdit";
+import ActionDelete from "../../../components/ActionDelete";
+import { BtnAdd } from "../../../components/BtnAdd";
 
 const HeadquatersManagment = () => {
-  const api = helpHttp();
   const auth = useSelector((state) => state.auth);
   const [headquaters, setHeadquaters] = useState([]);
   const [loading, setLoading] = useState(true);
   const url = `http://localhost:8000/api/headquarters`;
 
   useEffect(() => {
-    api
+    helpHttp()
       .get(url, {
         headers: {
           Authorization: `Bearer ${auth.token}`,
@@ -25,11 +27,11 @@ const HeadquatersManagment = () => {
         if (!res.err) {
           setHeadquaters(res.data);
         } else {
-          setHeadquaters({});
+          setHeadquaters([]);
         }
         setLoading(false);
       });
-  }, []); 
+  }, []);
 
   const columns = [
     {
@@ -52,12 +54,8 @@ const HeadquatersManagment = () => {
       name: "ACCIÓN",
       selector: (row) => (
         <>
-          <Link to={`/edit-headquarter/${row.id}`} className="me-3">
-            <i className="fas fa-pencil" />
-          </Link>{" "}
-          <Link to={""}>
-            <i className="fas fa-trash" />
-          </Link>
+          <ActionEdit link={`/edit-headquarter/${row.id}`} />
+          <ActionDelete link={``} />
         </>
       ),
       sortable: true,
@@ -96,9 +94,8 @@ const HeadquatersManagment = () => {
       <div className="card mt-5">
         <div className="card-header d-flex justify-content-between">
           <h4>Sucursales</h4>
-          <Link to={"/add-headquarter"} className="btn btn-primary">
-            <i className="fas fa-user-plus" />
-          </Link>
+          
+          <BtnAdd link={"/add-headquarter"}/>
         </div>
         <div className="card-body-ppp">
           {loading ? (

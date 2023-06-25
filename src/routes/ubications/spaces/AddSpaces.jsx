@@ -81,6 +81,8 @@ const AddSpaces = () => {
           setHeadquaters([]);
         }
       });
+      console.log(headquarters)
+      console.log(headquarters.length)
   }, []);
 
   return (
@@ -137,7 +139,7 @@ const AddSpaces = () => {
                 onChange={handleChange}
               >
                 <option value={""}>Elija la sucursal...</option>
-                {headquarters.length &&
+                {headquarters?.length &&
                   headquarters.map((headquarter) => (
                     <option key={headquarter.id} value={headquarter.id}>
                       {headquarter.name}

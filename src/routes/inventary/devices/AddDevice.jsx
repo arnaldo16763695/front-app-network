@@ -1,5 +1,5 @@
-import { useState  } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { helpHttp } from "../../../helpers/helpHttp";
 import Select from "../../../components/Select";
@@ -19,14 +19,18 @@ const AddDevice = () => {
   const [headquartersSelect, setHeadquartersSelect] = useState("");
   // const [statusSelect, setStatusSelect] = useState("");
   const [form, setForm] = useState(initialForm);
-
+  const [successMessage, setSuccessMessage] = useState("");
+  const [failMessage, setFailMessage] = useState("");
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     // const formData = {
     //   ...form,
     //   headquarter_id: headquartersSelect,
     // };
-    console.log(form)
+
+    
+    console.log(form);
     helpHttp()
       .post(urlpost, {
         method: "POST",
@@ -36,7 +40,21 @@ const AddDevice = () => {
         body: form,
       })
       .then((res) => {
-       console.log(res)
+        if (res.message === "Registro creado") {
+          setSuccessMessage(res.message);
+          setTimeout(() => {
+            setSuccessMessage("");
+            navigate("/devices");
+          }, 3000);
+        }
+        if (res.message === "Errores de Validacion") {
+          setFailMessage(Object.entries(res.data));
+          setTimeout(() => {
+            setFailMessage({});
+          }, 6000);
+          console.log(Object.entries(res.data));
+        }
+        console.log(res);
       });
   };
 
@@ -47,27 +65,6 @@ const AddDevice = () => {
     });
   };
 
-  // useEffect(() => {
-  //   helpHttp()
-  //     .get(urlHeadquarters, {
-  //       headers: {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       if (!res.err) {
-  //         setHeadquarters(res.data);
-
-  //         if (res.message === "No hay datos disponibles") {
-  //           setHeadquarters([]);
-  //         }
-  //         console.log(res);
-  //       } else {
-  //         setHeadquarters([]);
-  //         console.log(res.statusText);
-  //       }
-  //     });
-  // }, [urlHeadquarters, auth.token]);
 
   const getAllLocationById = (id) => {
     helpHttp()
@@ -104,6 +101,23 @@ const AddDevice = () => {
         </div>
         <div className="card-body">
           <form onSubmit={handleSubmit}>
+            {successMessage && (
+              <div className="alert alert-success" role="alert">
+                {successMessage}
+              </div>
+            )}
+
+            {Object.keys(failMessage).length > 0 && (
+              <div className="alert alert-danger" role="alert">
+                {failMessage.map(([key, value]) => (
+                  <ul key={key}>
+                    {value.map((el, id) => (
+                      <li key={id}>{el}</li>
+                    ))}
+                  </ul>
+                ))}
+              </div>
+            )}
             <div className="mb-3">
               <label htmlFor="inputName" className="form-label fw-bold">
                 Nombre
@@ -208,7 +222,13 @@ const AddDevice = () => {
                   ))}
               </select>
             </div> */}
-            <Select  url={urlHeadquarters} title={'Sucursal'} nameInput={'headquarter'} placeholder={'Elije una sucursal'} handleChange={handleChangeHeadquarter} />
+            <Select
+              url={urlHeadquarters}
+              title={"Sucursal"}
+              nameInput={"headquarter"}
+              placeholder={"Elije una sucursal"}
+              handleChange={handleChangeHeadquarter}
+            />
 
             <div className="mb-3">
               <label htmlFor="inputLocation_id" className="form-label fw-bold">

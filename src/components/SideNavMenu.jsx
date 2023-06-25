@@ -1,11 +1,27 @@
 import { Link } from "react-router-dom";
 
 const SideNavMenu = () => {
+  const getCookie = (cname) => {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  };
+  const idRol = getCookie("roleId");
   return (
     <div className="sb-sidenav-menu">
       <div className="nav">
         <div className="sb-sidenav-menu-heading">Core</div>
-        <Link to={"home"} className="nav-link" href="index.html">
+        <Link to={"home"} className="nav-link">
           <div className="sb-nav-link-icon">
             <i className="fas fa-home" />
           </div>
@@ -13,38 +29,44 @@ const SideNavMenu = () => {
         </Link>
         {/* <div className="sb-sidenav-menu-heading">Interface</div> */}
 
-        <a
-          
-          className="nav-link collapsed"
-          href="#"
-          data-bs-toggle="collapse"
-          data-bs-target="#collapseUsers"
-          aria-expanded="false"
-          aria-controls="collapseLayouts"
-        >
-          <div className="sb-nav-link-icon">
-            <i className="fas fa-user" />
-          </div>
-          Usuarios
-          <div className="sb-sidenav-collapse-arrow">
-            <i className="fas fa-angle-down" />
-          </div>
-        </a>
-        <div
-          className="collapse"
-          id="collapseUsers"
-          aria-labelledby="headingOne"
-          data-bs-parent="#sidenavAccordion"
-        >
-          <nav className="sb-sidenav-menu-nested nav">
-            <Link to={"users"} className="nav-link" href="layout-static.html">
-              Gestionar Usuarios
-            </Link>
-          </nav>
-        </div>
+        {idRol !== "3" && (
+          <>
+            <a
+              className="nav-link collapsed"
+              href="#"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseUsers"
+              aria-expanded="false"
+              aria-controls="collapseLayouts"
+            >
+              <div className="sb-nav-link-icon">
+                <i className="fas fa-user" />
+              </div>
+              Usuarios
+              <div className="sb-sidenav-collapse-arrow">
+                <i className="fas fa-angle-down" />
+              </div>
+            </a>
+            <div
+              className="collapse"
+              id="collapseUsers"
+              aria-labelledby="headingOne"
+              data-bs-parent="#sidenavAccordion"
+            >
+              <nav className="sb-sidenav-menu-nested nav">
+                <Link
+                  to={"users"}
+                  className="nav-link"
+                  href="layout-static.html"
+                >
+                  Gestionar Usuarios
+                </Link>
+              </nav>
+            </div>
+          </>
+        )}
 
         <a
-          
           className="nav-link collapsed"
           href="#"
           data-bs-toggle="collapse"
@@ -85,7 +107,6 @@ const SideNavMenu = () => {
         </div>
 
         <a
-          
           className="nav-link collapsed"
           href="#"
           data-bs-toggle="collapse"
@@ -94,7 +115,7 @@ const SideNavMenu = () => {
           aria-controls="collapsePages"
         >
           <div className="sb-nav-link-icon">
-          <i className="fa-solid fa-boxes-stacked"></i>
+            <i className="fa-solid fa-boxes-stacked"></i>
           </div>
           Inventario
           <div className="sb-sidenav-collapse-arrow">
@@ -113,19 +134,25 @@ const SideNavMenu = () => {
             </Link>
           </nav>
           <nav className="sb-sidenav-menu-nested nav">
-            <Link to={"status-device"} className="nav-link" href="layout-static.html">
-              Status 
+            <Link
+              to={"status-device"}
+              className="nav-link"
+              href="layout-static.html"
+            >
+              Status
             </Link>
           </nav>
           <nav className="sb-sidenav-menu-nested nav">
-            <Link to={"types-device"} className="nav-link" href="layout-static.html">
-              Tipos 
+            <Link
+              to={"types-device"}
+              className="nav-link"
+              href="layout-static.html"
+            >
+              Tipos
             </Link>
           </nav>
         </div>
         {/* <div className="sb-sidenav-menu-heading">Addons</div> */}
-        
-       
       </div>
     </div>
   );
