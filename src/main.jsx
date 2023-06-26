@@ -46,7 +46,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               </ProtectedRoutes>
             }
           >
-            <Route path="/home" element={<Dashboard />}></Route>
+            <Route index="/home" element={<Dashboard />}></Route>
             <Route path="/users" element={<UserManagment />}></Route>
             <Route path="/add-User" element={<AddUser />}></Route>
             <Route path="/edit-user/:user_id" element={<EditUser />}></Route>

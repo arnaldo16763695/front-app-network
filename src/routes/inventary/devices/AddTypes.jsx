@@ -26,19 +26,33 @@ const AddTypes = () => {
         body: data,
       })
       .then((res) => {
-        if (
-          res.message === "Registro creado exitosamente" &&
-          res.status === 201
-        ) {
-          setMessage(res.message);
+        // if (
+        //   res.message === "Registro creado exitosamente" &&
+        //   res.status === 201
+        // ) {
+        //   setMessage(res.message);
 
-          setTimeout(() => {
+        //   setTimeout(() => {
+        //     setMessage("");
+        //     navigate("/types-device");
+        //   }, 3000);
+        // } else {
+        //   console.log(res);
+        //   setFailMessage(res.message);
+        // }
+        console.log(res)
+        if (res.status === 201) {
+          setMessage(res.message);
+          return setTimeout(() => {
             setMessage("");
-            navigate("/types-device");
+            navigate("/status-device");
           }, 3000);
-        } else {
-          console.log(res);
-          setFailMessage(res.message);
+        }
+        if (res.message === "Errores de Validacion") {
+          setFailMessage(Object.entries(res.data));
+          return setTimeout(() => {
+            setFailMessage({});
+          }, 6000);
         }
       });
   };
@@ -49,7 +63,18 @@ const AddTypes = () => {
       </div>
       <div className="card-body">
         {message && <div className="alert alert-success">{message}</div>}
-        {failMessage && <div className="alert alert-danger">{failMessage}</div>}
+
+        {Object.keys(failMessage).length > 0 && (
+          <div className="alert alert-danger" role="alert">
+            {failMessage.map(([key, value]) => (
+              <ul key={key}>
+                {value.map((el, id) => (
+                  <li key={id}>{el}</li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        )}
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="mb-3">
             <label htmlFor="name" className="form-label">

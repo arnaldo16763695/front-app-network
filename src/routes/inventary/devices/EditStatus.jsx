@@ -79,7 +79,7 @@ const EditStatus = () => {
       </div>
       <div className="card-body">
         {message && <div className="alert alert-success">{message}</div>}
-        {message && <div className="alert alert-success">{message}</div>}
+        
         {Object.keys(failMessage).length > 0 && (
           <div className="alert alert-danger" role="alert">
             {failMessage.map(([key, value]) => (

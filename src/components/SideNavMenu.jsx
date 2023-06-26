@@ -21,7 +21,7 @@ const SideNavMenu = () => {
     <div className="sb-sidenav-menu">
       <div className="nav">
         <div className="sb-sidenav-menu-heading">Core</div>
-        <Link to={"home"} className="nav-link">
+        <Link to={"/"} className="nav-link">
           <div className="sb-nav-link-icon">
             <i className="fas fa-home" />
           </div>
