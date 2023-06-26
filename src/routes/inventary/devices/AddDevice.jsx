@@ -39,7 +39,7 @@ const AddDevice = () => {
         body: form,
       })
       .then((res) => {
-        if (res.message === "Registro creado") {
+        if (res.status === 201) {
           setSuccessMessage(res.message);
           setTimeout(() => {
             setSuccessMessage("");
