@@ -45,7 +45,7 @@ const AddTypes = () => {
           setMessage(res.message);
           return setTimeout(() => {
             setMessage("");
-            navigate("/status-device");
+            navigate("/types-device");
           }, 3000);
         }
         if (res.message === "Errores de Validacion") {
@@ -78,7 +78,7 @@ const AddTypes = () => {
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
-              Statu de dispositivo
+              Tipo de dispositivo
             </label>
             <input
               type="text"

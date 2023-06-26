@@ -26,7 +26,7 @@ const AddStatus = () => {
         body: data,
       })
       .then((res) => {
-        if (res.status === 200) {
+        if (res.status === 201) {
           setMessage(res.message);
           return setTimeout(() => {
             setMessage("");
@@ -39,6 +39,7 @@ const AddStatus = () => {
             setFailMessage({});
           }, 6000);
         }
+        console.log(res)
       });
   };
   return (
