@@ -105,6 +105,7 @@ const Login = () => {
                           onChange={handleOnChange}
                           value={form.email}
                           name="email"
+                          required
                         />
                         <label htmlFor="inputEmail">Email address</label>
                       </div>
@@ -117,6 +118,7 @@ const Login = () => {
                           id="password"
                           onChange={handleOnChange}
                           value={form.password}
+                          required
                         />
                         <label htmlFor="inputPassword">Password</label>
                       </div>

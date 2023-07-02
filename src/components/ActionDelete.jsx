@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const ActionDelete = ({ link }) => {
+const ActionDelete = ({ deleteRegister }) => {
   const getCookie = (cname) => {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -17,9 +17,10 @@ const ActionDelete = ({ link }) => {
     return "";
   };
   const idRol = getCookie("roleId");
+
   return (
     idRol === "1" && (
-      <Link to={""}>
+      <Link title="Eliminar registro" onClick={deleteRegister}>
         <i className="fas fa-trash" />
       </Link>
     )

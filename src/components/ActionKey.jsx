@@ -19,7 +19,7 @@ const ActionKey = ({ link }) => {
   const idRol = getCookie("roleId");
   return (
     idRol === "1" && (
-      <Link to={link} className="me-3">
+      <Link to={link} className="me-3" title="Restablecer password">
         <i className="fas fa-key" />
       </Link>
     )

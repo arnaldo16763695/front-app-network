@@ -31,7 +31,25 @@ const UserManagment = () => {
 
   // const id_rol = getCookie("roleId");
 
-  useEffect(() => {
+  const deleteRegister = (id) => {
+    // e.preventDefault();
+    //  return alert(url +'/'+ id)
+    if (confirm("¿ Segur@ de eliminar ?")) {
+      helpHttp()
+        .del(url + "/" + id, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        });
+
+      getUsers();
+    }
+  };
+  const getUsers = () => {
     setLoading(true);
     helpHttp()
       .get(url, {
@@ -48,7 +66,10 @@ const UserManagment = () => {
         }
         setLoading(false);
       });
-  }, [url, auth.token]);
+  };
+  useEffect(() => {
+    getUsers();
+  }, []);
   // console.log(auth.token);
   const columns = [
     {
@@ -80,7 +101,7 @@ const UserManagment = () => {
 
           <ActionKey link={`/change-pass/${row.id}`} />
 
-          <ActionDelete link={``} />
+          <ActionDelete deleteRegister={() => deleteRegister(row.id)} />
         </>
       ),
       sortable: true,

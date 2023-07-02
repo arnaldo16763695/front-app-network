@@ -20,7 +20,7 @@ const ActionEdit = ({ link }) => {
   const idRol = getCookie("roleId");
   return (
     (idRol === "1" || idRol === "2") && (
-      <Link to={link} className="me-3">
+      <Link to={link} className="me-3" title="Editar registro">
         <i className="fas fa-pencil" />
       </Link>
     )

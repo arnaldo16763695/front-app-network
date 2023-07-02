@@ -82,6 +82,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               path="/headquarters"
               element={<HeadquatersManagment />}
             ></Route>
+           
           </Route>
         </Routes>
       </HashRouter>
