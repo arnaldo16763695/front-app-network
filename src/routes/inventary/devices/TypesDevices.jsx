@@ -6,14 +6,14 @@ import { Loader } from "../../../components/Loader";
 import ActionEdit from "../../../components/ActionEdit";
 import ActionDelete from "../../../components/ActionDelete";
 import { BtnAdd } from "../../../components/BtnAdd";
+import Swal from "sweetalert2";
 
 const TypesDevices = () => {
   const [loading, setLoading] = useState(false);
   const [types, setTypes] = useState([]);
   const auth = useSelector((state) => state.auth);
   const url = `http://localhost:8000/api/types`;
-
-  useEffect(() => {
+  const getTypes = () => {
     setLoading(true);
     helpHttp()
       .get(url, {
@@ -29,7 +29,44 @@ const TypesDevices = () => {
         }
         setLoading(false);
       });
-  }, []);
+  };
+  useEffect(() => {getTypes()}, []);
+
+  const deleteRegister = (id) => {
+    Swal.fire({
+      title: "¿ Estás segur@ ?",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, Eliminarlo!",
+      cancelButtonText: "No, Mantenerlo",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        helpHttp()
+          .del(url + "/" + id, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${auth.token}`,
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            if (
+              res.message ===
+              "Datos de tipo de equipo borrado exitosamente"
+            ) {
+              Swal.fire("Eliminado!", `${res.message}`, "success");
+            } else {
+              Swal.fire("Hubo un problema", `${res.message}`, "error");
+            }
+          });
+
+        getTypes();
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Cancelado", "", "error");
+      }
+    });
+  };
 
   const columns = [
     {
@@ -43,7 +80,7 @@ const TypesDevices = () => {
       selector: (row) => (
         <>
           <ActionEdit link={`/edit-types/${row.id}`} />
-          <ActionDelete link={``} />
+          <ActionDelete deleteRegister={()=>deleteRegister(row.id)} />
         </>
       ),
       sortable: true,

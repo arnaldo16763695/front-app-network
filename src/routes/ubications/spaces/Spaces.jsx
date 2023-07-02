@@ -6,13 +6,14 @@ import DataTable, { createTheme } from "react-data-table-component";
 import ActionEdit from "../../../components/ActionEdit";
 import ActionDelete from "../../../components/ActionDelete";
 import { BtnAdd } from "../../../components/BtnAdd";
+import Swal from "sweetalert2";
 
 const Spaces = () => {
   const url = `http://localhost:8000/api/locations`;
   const auth = useSelector((state) => state.auth);
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
+  const getSpaces = ()=>{
     setLoading(true);
     helpHttp()
       .get(url, {
@@ -29,7 +30,44 @@ const Spaces = () => {
         }
         setLoading(false);
       });
-  }, [url, auth.token]);
+  }
+  useEffect(() => {
+   getSpaces();
+  }, []);
+
+  const deleteRegister = (id) => {
+    Swal.fire({
+      title: "¿ Estás segur@ ?",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, Eliminarlo!",
+      cancelButtonText: "No, Mantenerlo",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        helpHttp()
+        .del(url + "/" + id, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.message === 'El registro se elimino correctamente') {
+            Swal.fire("Eliminado!", `${res.message}`, "success");
+          }else{
+            Swal.fire("Hubo un problema", `${res.message}`, "error");
+          }
+        });
+
+        getSpaces();
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Cancelado", "", "error");
+      }
+    });
+  };
 
   const columns = [
     {
@@ -53,7 +91,7 @@ const Spaces = () => {
       selector: (row) => (
         <>
           <ActionEdit link={`/edit-space/${row.id}`} />
-          <ActionDelete link={``} />
+          <ActionDelete deleteRegister={()=>deleteRegister(row.id)} />
         </>
       ),
       sortable: true,

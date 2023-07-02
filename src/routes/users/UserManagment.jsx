@@ -7,47 +7,43 @@ import DataTable, { createTheme } from "react-data-table-component";
 import ActionEdit from "../../components/ActionEdit";
 import ActionDelete from "../../components/ActionDelete";
 import ActionKey from "../../components/ActionKey";
-
+import Swal from "sweetalert2";
 const UserManagment = () => {
   const url = `http://localhost:8000/api/user`;
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const auth = useSelector((state) => state.auth);
-  // const getCookie = (cname) => {
-  //   let name = cname + "=";
-  //   let decodedCookie = decodeURIComponent(document.cookie);
-  //   let ca = decodedCookie.split(";");
-  //   for (let i = 0; i < ca.length; i++) {
-  //     let c = ca[i];
-  //     while (c.charAt(0) == " ") {
-  //       c = c.substring(1);
-  //     }
-  //     if (c.indexOf(name) == 0) {
-  //       return c.substring(name.length, c.length);
-  //     }
-  //   }
-  //   return "";
-  // };
-
-  // const id_rol = getCookie("roleId");
 
   const deleteRegister = (id) => {
-    // e.preventDefault();
-    //  return alert(url +'/'+ id)
-    if (confirm("¿ Segur@ de eliminar ?")) {
-      helpHttp()
-        .del(url + "/" + id, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${auth.token}`,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-        });
-
-      getUsers();
-    }
+    Swal.fire({
+      title: "¿ Estás segur@ ?",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, Eliminarlo!",
+      cancelButtonText: "No, Mantenerlo",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        helpHttp()
+          .del(url + "/" + id, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${auth.token}`,
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            if (res.status === 200) {
+              Swal.fire("Eliminado!", `${res.message}`, "success");
+            } else {
+              Swal.fire("Hubo un problema", `${res.message}`, "error");
+            }
+          });
+          getUsers();
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Cancelado", "", "error");
+      }
+    });
   };
   const getUsers = () => {
     setLoading(true);

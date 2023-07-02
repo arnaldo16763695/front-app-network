@@ -6,14 +6,15 @@ import { useSelector } from "react-redux";
 import ActionEdit from "../../../components/ActionEdit";
 import ActionDelete from "../../../components/ActionDelete";
 import { BtnAdd } from "../../../components/BtnAdd";
-
+import Swal from "sweetalert2";
 
 const DevicesManagment = () => {
   const auth = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const [devices, setDevices] = useState([]);
   const url = `http://localhost:8000/api/devices`;
-  useEffect(() => {
+
+  const getDevices = () => {
     setLoading(true);
     helpHttp()
       .get(url, {
@@ -30,7 +31,42 @@ const DevicesManagment = () => {
         }
         setLoading(false);
       });
-  }, [url, auth.token]);
+  };
+  useEffect(() => {
+    getDevices();
+  }, []);
+  const deleteRegister = (id) => {
+    Swal.fire({
+      title: "¿ Estás segur@ ?",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, Eliminarlo!",
+      cancelButtonText: "No, Mantenerlo",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        helpHttp()
+          .del(url + "/" + id, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${auth.token}`,
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            if (res.message === "Datos de dispositivo borrados exitosamente") {
+              Swal.fire("Eliminado!", `${res.message}`, "success");
+            } else {
+              Swal.fire("Hubo un problema", `${res.message}`, "error");
+            }
+          });
+
+        getDevices();
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Cancelado", "", "error");
+      }
+    });
+  };
   const columns = [
     {
       name: "NOMBRE",
@@ -93,8 +129,8 @@ const DevicesManagment = () => {
       selector: (row) => (
         <>
           <ActionEdit link={`/edit-device/${row.id}`} />
-          
-          <ActionDelete link={``} />
+
+          <ActionDelete deleteRegister={() => deleteRegister(row.id)} />
         </>
       ),
       sortable: true,
@@ -130,7 +166,7 @@ const DevicesManagment = () => {
       <div className="card mt-5">
         <div className="card-header d-flex justify-content-between">
           <h4>Administración de dispositivos</h4>
-          <BtnAdd link={"/add-device"}/>
+          <BtnAdd link={"/add-device"} />
         </div>
         <div className="card-body-ppp">
           {loading ? (
