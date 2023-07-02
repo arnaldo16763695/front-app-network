@@ -44,12 +44,17 @@ const DevicesManagment = () => {
     },
     {
       name: "MODELO",
-      selector: (row) => row.serial,
+      selector: (row) => row.model,
       sortable: true,
     },
     {
       name: "CODE",
       selector: (row) => row.code,
+      sortable: true,
+    },
+    {
+      name: "SERIAL",
+      selector: (row) => row.serial,
       sortable: true,
     },
     {
