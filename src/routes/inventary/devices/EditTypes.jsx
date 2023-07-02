@@ -75,7 +75,7 @@ const EditTypes = () => {
   return (
     <div className="card mt-5">
       <div className="card-header d-flex ">
-        <h4>Editar status dispositivos</h4>
+        <h4>Editar tipos dispositivos</h4>
       </div>
       <div className="card-body">
         {message && <div className="alert alert-success">{message}</div>}
@@ -94,7 +94,7 @@ const EditTypes = () => {
         <form onSubmit={handleSubmit} autoComplete="off">
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
-              Statu de dispositivo
+              Tipo de dispositivo
             </label>
             <input
               type="text"
@@ -111,7 +111,7 @@ const EditTypes = () => {
             className="btn btn-primary me-3"
             value="Guardar"
           />
-          <Link type="button" to={"/status-device"} className="btn btn-warning">
+          <Link type="button" to={"/types-device"} className="btn btn-warning">
             Cancelar
           </Link>
         </form>
