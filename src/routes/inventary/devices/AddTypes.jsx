@@ -86,6 +86,7 @@ const AddTypes = () => {
               id="name"
               placeholder="Ejemplo: Router"
               onChange={(e) => setName(e.target.value)}
+              required
             />
           </div>
           <input

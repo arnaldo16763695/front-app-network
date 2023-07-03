@@ -172,7 +172,7 @@ const EditDevice = () => {
                   id="inputName"
                   placeholder="Ingrese el nombre del dispositivo"
                   name="name"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={form.name || ""}
                 />
               </div>
@@ -190,7 +190,7 @@ const EditDevice = () => {
                   id="inputManufacturer"
                   placeholder="Ingrese la Marca"
                   name="manufacturer"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={form.manufacturer || ""}
                 />
               </div>
@@ -204,7 +204,7 @@ const EditDevice = () => {
                   id="inputModel"
                   placeholder="Ingrese el modelo"
                   name="model"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={form.model || ""}
                 />
               </div>
@@ -218,7 +218,7 @@ const EditDevice = () => {
                   id="inputSerial"
                   placeholder="Ingrese el mserial"
                   name="serial"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={form.serial || ""}
                 />
               </div>
@@ -232,7 +232,7 @@ const EditDevice = () => {
                   id="inputCode"
                   placeholder="Ingrese el código"
                   name="code"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={form.code || ""}
                 />
               </div>
@@ -249,7 +249,7 @@ const EditDevice = () => {
                   id="inputDescription"
                   placeholder="Ingrese la Descripción"
                   name="description"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={form.description || ""}
                 />
               </div>
@@ -266,7 +266,7 @@ const EditDevice = () => {
                 <select
                   className="form-control"
                   name="headquarter_id"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={form.headquarter_id}
                 >
                   <option value="">Elija la Sucursal...</option>
@@ -288,7 +288,7 @@ const EditDevice = () => {
                 <select
                   className="form-control"
                   name="location_id"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={form.location_id}
                 >
                   <option value="">Elija la localización...</option>
@@ -332,7 +332,7 @@ const EditDevice = () => {
                   id="inputObservation"
                   placeholder="Ingrese la Observación"
                   name="observation"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={form.observation || ""}
                 />
               </div>

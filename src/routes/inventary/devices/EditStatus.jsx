@@ -102,7 +102,7 @@ const EditStatus = () => {
               id="name"
               name="name"
               placeholder="Ejemplo: En uso"
-              onChange={handleChange}
+              onChange={handleChange}  required
               value={form.name}
             />
           </div>

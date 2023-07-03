@@ -84,7 +84,7 @@ const AddHeadquarter = () => {
                 className="form-control"
                 id="inputName"
                 placeholder="Ingrese el nombre de la sucursal"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.name}
                 name="name"
               />
@@ -98,7 +98,7 @@ const AddHeadquarter = () => {
                 className="form-control"
                 id="inputState"
                 placeholder="Ingrese en que estado"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.state}
                 name="state"
               />
@@ -112,7 +112,7 @@ const AddHeadquarter = () => {
                 className="form-control"
                 id="inputCity"
                 placeholder="Ingrese en que estado"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.city}
                 name="city"
               />
@@ -126,7 +126,7 @@ const AddHeadquarter = () => {
                 className="form-control"
                 id="inputAddress"
                 placeholder="Ingrese la direccion de la sucursal"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.address}
                 name="address"
               />

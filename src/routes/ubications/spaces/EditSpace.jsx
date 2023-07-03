@@ -148,7 +148,7 @@ const EditSpace = () => {
                   id="inputName"
                   placeholder="Ingrese el nombre del espacio"
                   name="name"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={"" || form.name}
                 />
               </div>
@@ -159,7 +159,7 @@ const EditSpace = () => {
                 <select
                   className="form-control"
                   name="headquarter_id"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={"" || form.headquarter_id}
                   id="headquarter_id"
                 >
@@ -182,7 +182,7 @@ const EditSpace = () => {
                   id="inputObservation"
                   placeholder="Ingrese el nombre del espacio"
                   name="observation"
-                  onChange={handleChange}
+                  onChange={handleChange}  required
                   value={"" || form.observation}
                 />
               </div>
