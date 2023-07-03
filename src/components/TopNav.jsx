@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { removeAuth } from "../features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 
 const TopNav = () => {
   const auth = useSelector((state) => state.auth);
@@ -49,13 +50,31 @@ const TopNav = () => {
     // localStorage.removeItem("tokenNetwork");
     // localStorage.removeItem("roleId");
     // localStorage.removeItem("userName");
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "roleName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "roleId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    dispatch(removeAuth());
-    logoutSession();
-    navigate("/login");
+
+    Swal.fire({
+      title: "¿ Estás segur@ de cerrar sesión ?",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, Cerrarla!",
+      cancelButtonText: "No, Mantenerla",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.cookie =
+          "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie =
+          "roleName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie =
+          "userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie =
+          "roleId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        dispatch(removeAuth());
+        logoutSession();
+        navigate("/login");
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Sesion aun Activa", "", "success");
+      }
+    });
   };
 
   return (
@@ -123,7 +142,7 @@ const TopNav = () => {
               <hr className="dropdown-divider" />
             </li>
             <li>
-              <button onClick={logout} className="dropdown-item" href="#!">
+              <button onClick={logout} className="dropdown-item">
                 Cerrar sesión
               </button>
             </li>
