@@ -99,7 +99,7 @@ const TopNav = () => {
         className="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"
       >
         <div className="input-group">
-          <input
+          {/* <input
             className="form-control"
             type="text"
             placeholder="Search for..."
@@ -112,7 +112,7 @@ const TopNav = () => {
             type="button"
           >
             <i className="fas fa-search" />
-          </button>
+          </button> */}
         </div>
       </form>
       {/* Navbar*/}
