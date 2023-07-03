@@ -70,7 +70,7 @@ const TypesDevices = () => {
 
   const columns = [
     {
-      name: "STATUS",
+      name: "TIPO",
       selector: (row) => row.name,
       sortable: true,
     },
