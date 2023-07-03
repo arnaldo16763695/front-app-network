@@ -72,6 +72,7 @@ const AddStatus = () => {
               id="name"
               placeholder="Ejemplo: En uso"
               onChange={(e) => setName(e.target.value)}
+              required
             />
           </div>
           <input

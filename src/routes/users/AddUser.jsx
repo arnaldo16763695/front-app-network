@@ -41,7 +41,7 @@ const AddUser = () => {
       if (json.message === "Errores de Validacion") {
         setFailMessage(Object.entries(json.data));
         setTimeout(() => {
-          setFailMessage({}); 
+          setFailMessage({});
         }, 6000);
         console.log(Object.entries(json.data));
       }
@@ -53,15 +53,15 @@ const AddUser = () => {
     e.preventDefault();
     console.log(form);
 
-    if (
-      !form.email.trim() ||
-      !form.name.trim() ||
-      !form.phone.trim() ||
-      !form.password.trim()
-    ) {
-      alert("Datos incompletos");
-      return;
-    }
+    // if (
+    //   !form.email.trim() ||
+    //   !form.name.trim() ||
+    //   !form.phone.trim() ||
+    //   !form.password.trim()
+    // ) {
+    //   alert("Datos incompletos");
+    //   return;
+    // }
 
     addUser(form);
   };
@@ -74,11 +74,11 @@ const AddUser = () => {
   const getRols = async () => {
     try {
       const res = await fetch("http://localhost:8000/api/auth/roles", {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${auth.token}`,
-          },
-        }),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${auth.token}`,
+        },
+      }),
         rols = await res.json();
       console.log(rols);
       setRols(rols);
@@ -125,7 +125,8 @@ const AddUser = () => {
                 className="form-control"
                 id="inputCorreo"
                 placeholder="name@example.com"
-                onChange={handleChange}
+                onChange={handleChange} required
+
                 value={form.email}
                 name="email"
               />
@@ -139,7 +140,7 @@ const AddUser = () => {
                 className="form-control"
                 id="inputName"
                 rows="3"
-                onChange={handleChange}
+                onChange={handleChange} required
                 value={form.name}
                 name="name"
               ></input>
@@ -153,7 +154,7 @@ const AddUser = () => {
                 className="form-control"
                 id="inputPhone"
                 rows="3"
-                onChange={handleChange}
+                onChange={handleChange} required
                 value={form.phone}
                 name="phone"
               ></input>
@@ -167,7 +168,7 @@ const AddUser = () => {
                 className="form-control"
                 id="inputPassword"
                 rows="3"
-                onChange={handleChange}
+                onChange={handleChange} required
                 value={form.password}
                 name="password"
               ></input>
@@ -180,7 +181,7 @@ const AddUser = () => {
                 name="role_id"
                 className="form-select"
                 aria-label="Default select example"
-                onChange={handleChange}
+                onChange={handleChange} required
               >
                 <option value="">Elija un rol ..</option>
                 {Object.keys(rols).length > 0 &&

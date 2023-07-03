@@ -126,7 +126,7 @@ const AddDevice = () => {
                 id="inputName"
                 placeholder="Ingrese el nombre del dispositivo"
                 name="name"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.name || ""}
               />
             </div>
@@ -141,7 +141,7 @@ const AddDevice = () => {
                 id="inputManufacturer"
                 placeholder="Ingrese la Marca"
                 name="manufacturer"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.manufacturer || ""}
               />
             </div>
@@ -155,7 +155,7 @@ const AddDevice = () => {
                 id="inputModel"
                 placeholder="Ingrese el modelo"
                 name="model"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.model || ""}
               />
             </div>
@@ -169,7 +169,7 @@ const AddDevice = () => {
                 id="inputSerial"
                 placeholder="Ingrese el mserial"
                 name="serial"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.serial || ""}
               />
             </div>
@@ -183,7 +183,7 @@ const AddDevice = () => {
                 id="inputCode"
                 placeholder="Ingrese el código"
                 name="code"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.code || ""}
               />
             </div>
@@ -197,7 +197,7 @@ const AddDevice = () => {
                 id="inputDescription"
                 placeholder="Ingrese la Descripción"
                 name="description"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.description || ""}
               />
             </div>
@@ -235,7 +235,7 @@ const AddDevice = () => {
               <select
                 className="form-control"
                 name="location_id"
-                onChange={handleChange}
+                onChange={handleChange}  required
               >
                 <option value="">Elija la localización...</option>
                 {locationsSelect.length &&
@@ -271,7 +271,7 @@ const AddDevice = () => {
                 id="inputObservation"
                 placeholder="Ingrese la Observación"
                 name="observation"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.observation || ""}
               />
             </div>

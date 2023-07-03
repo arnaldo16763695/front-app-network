@@ -125,7 +125,7 @@ const AddSpaces = () => {
                 id="inputName"
                 placeholder="Ingrese el nombre del espacio"
                 name="name"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.name}
               />
             </div>
@@ -136,7 +136,7 @@ const AddSpaces = () => {
               <select
                 className="form-control"
                 name="headquarter_id"
-                onChange={handleChange}
+                onChange={handleChange}  required
               >
                 <option value={""}>Elija la sucursal...</option>
                 {headquarters?.length &&
@@ -157,7 +157,7 @@ const AddSpaces = () => {
                 id="inputObservation"
                 placeholder="Ingrese el nombre del espacio"
                 name="observation"
-                onChange={handleChange}
+                onChange={handleChange}  required
                 value={form.observations}
               />
             </div>
