@@ -1,14 +1,15 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const ChangePassword = () => {
   const { user_id } = useParams();
   const auth = useSelector((state) => state.auth);
   const url_user = `http://localhost:8000/api/user/${user_id}`;
   const [dataUser, setDataUser] = useState({});
-  const [pass, setPass] = useState({});
-  const [pass2, setPass2] = useState({});
+  const [pass, setPass] = useState("");
+  const [pass2, setPass2] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [failMessage, setFailMessage] = useState({});
   const navigate = useNavigate();
@@ -50,12 +51,12 @@ const ChangePassword = () => {
       }
 
       console.log(json.message);
-    //   setSuccessMessage(json.message);
-    //   setTimeout(() => {
-    //     setSuccessMessage("");
-    //     navigate(`/users`);
-    //   }, 3000);
-    if (json.message === "Contraseña restablecida correctamente") {
+      //   setSuccessMessage(json.message);
+      //   setTimeout(() => {
+      //     setSuccessMessage("");
+      //     navigate(`/users`);
+      //   }, 3000);
+      if (json.message === "Contraseña restablecida correctamente") {
         setSuccessMessage(json.message);
         setTimeout(() => {
           setSuccessMessage("");
@@ -74,12 +75,10 @@ const ChangePassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!pass || !pass2) {
-      return alert("Llena todos los campos");
-    }
+   
 
-    if (pass !== pass2) {
-      return alert("Las contraseñas no coinciden");
+    if (pass.trim() !== pass2.trim()) {
+      return Swal.fire("Lo siento...", "Las contraseñas no coinciden", "error");
     }
     const datos = {
       email: dataUser?.email,
@@ -127,6 +126,7 @@ const ChangePassword = () => {
                   onChange={(e) => setPass(e.target.value)}
                   value={pass}
                   name="password"
+                  required
                 ></input>
               </div>
               <div className="mb-3">
@@ -141,6 +141,7 @@ const ChangePassword = () => {
                   onChange={(e) => setPass2(e.target.value)}
                   value={pass2}
                   name="password2"
+                  required
                 ></input>
               </div>
             </div>
